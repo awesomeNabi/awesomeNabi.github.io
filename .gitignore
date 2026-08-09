@@ -1,0 +1,24 @@
+.tmp/
+tmp/
+dist/
+*.zip
+node_modules/
+.edgeone/
+
+# Private source material and large raw media are not part of the public site.
+resume-zh_CN.pdf
+PixPin_*.gif
+242e1488f31b6065f692ae73e122ec11.mp4
+相关链接.txt
+
+# Duplicated source images; optimized public copies live under assets/.
+Lada.png
+VSVE.png
+assets/embodied-agent-demo.mp4
+assets/embodied-agent-demo-h264.mp4
+
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+.tef_dist/*
+  

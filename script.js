@@ -6,6 +6,33 @@ const sections = navLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
 
+const activateNav = (hash) => {
+  navLinks.forEach((link) => {
+    const active = link.getAttribute("href") === hash;
+    link.classList.toggle("is-active", active);
+    if (active) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  });
+};
+
+let manualNavigationUntil = 0;
+
+navLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const hash = link.getAttribute("href");
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    event.preventDefault();
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    manualNavigationUntil = performance.now() + (reduceMotion ? 120 : 900);
+    activateNav(hash);
+    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    history.replaceState(null, "", hash);
+    window.setTimeout(syncActiveNav, reduceMotion ? 150 : 950);
+  });
+});
+
 const setHeaderState = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 18);
 };
@@ -29,26 +56,50 @@ if ("IntersectionObserver" in window) {
 
   revealElements.forEach((element) => revealObserver.observe(element));
 
-  const activeSectionObserver = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-      if (!visible) return;
-      navLinks.forEach((link) => {
-        const active = link.getAttribute("href") === `#${visible.target.id}`;
-        link.classList.toggle("is-active", active);
-        if (active) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
-      });
-    },
-    { rootMargin: "-18% 0px -62% 0px", threshold: [0.08, 0.25, 0.5] },
-  );
-
-  sections.forEach((section) => activeSectionObserver.observe(section));
 } else {
   revealElements.forEach((element) => element.classList.add("is-visible"));
+}
+
+function syncActiveNav() {
+  if (!sections.length || performance.now() < manualNavigationUntil) return;
+
+  const headerHeight = header?.getBoundingClientRect().height ?? 0;
+  const marker = window.scrollY + headerHeight + Math.min(window.innerHeight * 0.22, 170);
+  let activeSection = sections[0];
+
+  sections.forEach((section) => {
+    if (section.offsetTop <= marker) activeSection = section;
+  });
+
+  const reachedPageEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+  if (reachedPageEnd) activeSection = sections.at(-1);
+  activateNav(`#${activeSection.id}`);
+}
+
+let navFramePending = false;
+window.addEventListener(
+  "scroll",
+  () => {
+    if (navFramePending) return;
+    navFramePending = true;
+    window.requestAnimationFrame(() => {
+      syncActiveNav();
+      navFramePending = false;
+    });
+  },
+  { passive: true },
+);
+
+window.addEventListener("hashchange", () => {
+  if (sections.some((section) => `#${section.id}` === window.location.hash)) {
+    activateNav(window.location.hash);
+  }
+});
+
+if (sections.some((section) => `#${section.id}` === window.location.hash)) {
+  activateNav(window.location.hash);
+} else {
+  syncActiveNav();
 }
 
 // Some browsers throttle observer callbacks in background tabs and screenshot runs.

@@ -58,25 +58,21 @@
             <a class="tracking-card" href="#research">
               <span class="tracking-index">01</span>
               <h3>机器人学习</h3>
-              <p>动作表征、策略学习与跨任务泛化</p>
               <span class="card-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="tracking-card" href="#research">
               <span class="tracking-index">02</span>
               <h3>具身智能 / VLA</h3>
-              <p>语言、视觉与连续控制的语义对齐</p>
               <span class="card-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="tracking-card" href="#about">
               <span class="tracking-index">03</span>
               <h3>多模态记忆</h3>
-              <p>长时、多会话智能体的记忆与评测</p>
               <span class="card-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="tracking-card" href="#projects">
               <span class="tracking-index">04</span>
               <h3>Agent 系统</h3>
-              <p>任务规划、工具调用与多本体部署</p>
               <span class="card-arrow" aria-hidden="true">↗</span>
             </a>
           </div>
@@ -102,8 +98,8 @@
 
           <dl class="profile-facts">
             <div>
-              <dt>Current</dt>
-              <dd>蚂蚁集团 · 多模态记忆算法实习</dd>
+              <dt>Birthday</dt>
+              <dd>2002.12.28</dd>
             </div>
             <div>
               <dt>Focus</dt>
@@ -128,47 +124,20 @@
             <header class="section-header">
               <div>
                 <p class="section-index"><span>01</span> ABOUT</p>
-                <h2 id="about-title">我在做什么</h2>
+                <h2 id="about-title">个人简介</h2>
               </div>
-              <p class="section-side-note">从算法原型到真实机器人系统</p>
+              <p class="section-side-note">教育背景与技术能力</p>
             </header>
 
             <p class="about-lead">
-              我的研究围绕一个具体问题展开：智能体如何把复杂、连续的感知输入，转化为
-              <em>具有语义、能够迁移、并且在物理世界中安全执行</em>的决策？
+              同济大学电子信息硕士研究生，研究方向聚焦机器人学习、具身智能与多模态记忆，
+              关注如何把算法中的语义结构转化为<em>可执行、可迁移、可在真机验证</em>的系统能力。
             </p>
-            <p class="about-copy">
-              我同时关注表征学习和系统工程：一端是语言引导的动作表示、VLM 监督与大规模机器人轨迹，
-              另一端是 ROS2、Zenoh、工具调用、边缘部署与真机调试。对我而言，研究的终点不是离线指标，
-              而是一个能在真实环境中完成闭环的系统。
-            </p>
-
-            <div class="focus-grid">
-              <article class="focus-item focus-item-blue">
-                <span>01 · CURRENT</span>
-                <h3>多模态长期记忆</h3>
-                <p>面向长时、多会话视觉语言智能体，参与记忆管线构建与系统化评测。</p>
-              </article>
-              <article class="focus-item">
-                <span>02 · RESEARCH</span>
-                <h3>语义化机器人表征</h3>
-                <p>用语言、状态和时间结构增强动作与视觉表征的可解释性和迁移能力。</p>
-              </article>
-              <article class="focus-item">
-                <span>03 · ENGINEERING</span>
-                <h3>跨本体 Agent Runtime</h3>
-                <p>把感知、规划、工具与控制能力封装成可组合服务，打通真机任务闭环。</p>
-              </article>
-            </div>
 
             <div class="about-bottom">
               <div class="timeline-block">
-                <h3>经历</h3>
+                <h3>教育经历</h3>
                 <ol class="timeline-list">
-                  <li>
-                    <time>2026.07 — 至今</time>
-                    <div><strong>蚂蚁集团</strong><span>多模态记忆算法实习生</span></div>
-                  </li>
                   <li>
                     <time>2024.09 — 2027.03</time>
                     <div><strong>同济大学</strong><span>电子信息 · 硕士</span></div>
@@ -181,7 +150,7 @@
               </div>
 
               <div class="skills-block">
-                <h3>技术栈</h3>
+                <h3>技术能力</h3>
                 <ul class="tag-list" aria-label="技术栈">
                   <li>Python</li><li>PyTorch</li><li>ROS2</li><li>Zenoh</li>
                   <li>VLM / VLA</li><li>Function Calling</li><li>MCP</li>
@@ -267,12 +236,12 @@
                   <p class="paper-question"><b>研究问题</b> 通用视觉表征能“看见”场景，却常常忽略机器人执行任务时真正关键的物理状态变化。</p>
                   <p>
                     该工作从冻结 VLM 中蒸馏任务条件下的时序语义，同时加入末端执行器、关节与夹爪状态约束，
-                    让视觉编码器学习与操作过程一致的状态感知表征；部署时不再依赖 VLM。
+                    在 DROID 约 36K 条机器人轨迹上学习与操作过程一致的状态感知表征；部署时不再依赖 VLM。
                   </p>
                   <div class="paper-contributions">
-                    <div><span>DATA</span><p>DROID 约 36K 条机器人轨迹</p></div>
-                    <div><span>RESULT</span><p>17 项任务中 15 项最优或并列最优</p></div>
-                    <div><span>TRANSFER</span><p>Franka 真机上的仿真到现实验证</p></div>
+                    <div><span>METHOD</span><p>冻结 VLM 语义教师 + 机器人状态物理约束</p></div>
+                    <div><span>OBJECTIVE</span><p>对齐任务条件下的帧间语义关系与连续状态变化</p></div>
+                    <div><span>OUTCOME</span><p>15 / 17 项任务最优或并列最优，并完成 Franka 真机验证</p></div>
                   </div>
                   <span class="text-link text-link-muted">Manuscript under review</span>
                 </div>
@@ -315,7 +284,6 @@
                     <source src="assets/geek-mind-demo.mp4" type="video/mp4" />
                     当前浏览器不支持嵌入视频。
                   </video>
-                  <span class="media-caption">原 GIF 内容转码 · Geek Mind 多本体演示</span>
                 </div>
                 <div class="case-summary">
                   <p class="micro-label">项目介绍</p>
@@ -335,39 +303,39 @@
               </div>
 
               <div class="public-context">
-                <div class="public-context-label">公开产品语境</div>
+                <div class="public-context-label">项目简介</div>
                 <p>
-                  Geek Mind 对外定义为面向机器人的“通用具身大脑”。公开文章以
-                  <b>四大并行系统与中央事件总线</b>描述其正交矩阵式架构，将感知、交互、思考、动作解耦，
-                  并以通用硬件抽象层把不同本体映射为标准语义指令集。以下“个人负责”仅陈述我实际参与实现的部分。
+                  Geek Mind 定义为面向机器人的“通用具身大脑”，以<b>四大并行系统与中央事件总线</b>
+                  组织感知、交互、思考与动作，并通过硬件抽象层将不同机器人本体映射为标准语义指令，
+                  使同一套上层智能体能力可以跨本体组合与执行。
                 </p>
               </div>
 
               <section class="case-section" aria-labelledby="geek-role-title">
                 <div class="case-section-title">
                   <span>01</span>
-                  <div><p>MY ROLE</p><h4 id="geek-role-title">我负责的部分</h4></div>
+                  <div><p>MY ROLE</p><h4 id="geek-role-title">主要职责</h4></div>
                 </div>
                 <div class="responsibility-grid">
                   <article>
                     <span class="responsibility-index">A</span>
-                    <h5>统一感知入口</h5>
-                    <p>规范多模态输入与机器人状态，让规划层不依赖具体传感器和本体接口。</p>
+                    <h5>HAL 与统一接入</h5>
+                    <p>在硬件抽象层之上规范多模态输入、机器人状态与能力描述，让规划层不依赖具体传感器和本体 API。</p>
                   </article>
                   <article>
                     <span class="responsibility-index">B</span>
-                    <h5>任务规划与工具调用</h5>
-                    <p>实现任务路由、工具选择与能力执行框架，把导航、抓取等原子能力组合成任务。</p>
+                    <h5>能力 Schema 与工具协议</h5>
+                    <p>通过 MCP / HTTP 与 Tool / Function Calling 暴露导航、抓取等原子能力，支持规划器选择与组合执行。</p>
                   </article>
                   <article>
                     <span class="responsibility-index">C</span>
-                    <h5>Action Orchestrator</h5>
-                    <p>协同 Planner LLM 进行复杂任务拆解、能力编排，并加入多级动作安全门控。</p>
+                    <h5>长程任务分解与编排</h5>
+                    <p>基于 Planner LLM 与 Action Orchestrator 完成长程指令拆解、依赖排序、状态反馈和多级安全门控。</p>
                   </article>
                   <article>
                     <span class="responsibility-index">D</span>
-                    <h5>跨本体解耦</h5>
-                    <p>将 Agent 逻辑与机器人控制 API 分离，为机械臂和四足机器人复用同一运行时。</p>
+                    <h5>Cross-Embodiment Runtime</h5>
+                    <p>将 Agent 逻辑与机器人控制 API 解耦，形成可在机械臂与四足机器人之间复用的跨本体具身大脑运行时。</p>
                   </article>
                 </div>
               </section>
@@ -401,7 +369,7 @@
               </section>
 
               <div class="case-footer">
-                <p>文章用于说明产品语境；个人贡献以本页 “My Role” 为准。</p>
+                <p>查看 Geek Mind 的产品定义、系统能力与真实场景展示。</p>
                 <a
                   class="button button-primary"
                   href="https://mp.weixin.qq.com/s/_3Vhwg3F90XdgVEWZ5oUNA"
@@ -422,19 +390,28 @@
               </div>
 
               <div class="case-hero case-hero-landscape">
-                <div class="case-media case-media-landscape">
-                  <video
-                    controls
-                    muted
-                    playsinline
-                    preload="metadata"
-                    poster="assets/spatial-memory-poster.webp"
-                    aria-label="操作中构建语义空间记忆的 Franka 真机演示"
-                  >
-                    <source src="assets/spatial-memory-demo.mp4" type="video/mp4" />
-                    当前浏览器不支持嵌入视频。
-                  </video>
-                  <span class="media-caption">第一视角操作 · 语义空间记忆真机演示</span>
+                <div class="case-media-column">
+                  <div class="case-media case-media-landscape">
+                    <video
+                      controls
+                      muted
+                      playsinline
+                      preload="metadata"
+                      poster="assets/spatial-memory-poster.webp"
+                      aria-label="操作中构建语义空间记忆的 Franka 真机演示"
+                    >
+                      <source src="assets/spatial-memory-demo.mp4" type="video/mp4" />
+                      当前浏览器不支持嵌入视频。
+                    </video>
+                    <span class="media-caption">第一视角操作 · 语义空间记忆真机演示</span>
+                  </div>
+                  <div class="public-context public-context-blue public-context-inline">
+                    <div class="public-context-label">项目概述</div>
+                    <p>
+                      连续操作中的视觉流不仅要记录“看见了什么”，还要持续组织物体、空间关系、可达性与状态变化。
+                      项目以 <b>object-centric spatial memory</b> 将这些信息维护为可更新、可检索的长期环境上下文。
+                    </p>
+                  </div>
                 </div>
                 <div class="case-summary">
                   <p class="micro-label">项目介绍</p>
@@ -453,69 +430,44 @@
                 </div>
               </div>
 
-              <div class="public-context public-context-blue">
-                <div class="public-context-label">问题与思路</div>
-                <p>
-                  通用视觉特征容易忽略操作过程中细粒度、任务相关的状态变化。该项目把
-                  <b>指令条件帧间关系蒸馏</b>与<b>末端、关节、夹爪状态约束</b>结合，
-                  同时对齐“任务语义上发生了什么”与“机器人在物理上如何变化”。
-                </p>
-              </div>
-
               <section class="case-section" aria-labelledby="memory-role-title">
                 <div class="case-section-title">
                   <span>01</span>
-                  <div><p>MY ROLE</p><h4 id="memory-role-title">我负责的部分</h4></div>
+                  <div><p>MY CONTRIBUTION</p><h4 id="memory-role-title">从记忆系统到任务视觉编码器</h4></div>
                 </div>
-                <div class="responsibility-grid">
+                <p class="case-section-lead">
+                  项目构建面向机器人连续观察的语义空间记忆；我负责其中的视觉编码器预训练与表征增强，
+                  让记忆系统获得稳定、任务相关且可在真机高效部署的视觉特征。
+                </p>
+                <div class="memory-bridge">
                   <article>
-                    <span class="responsibility-index">A</span>
-                    <h5>视觉编码器预训练</h5>
-                    <p>设计面向机器人操作的预训练目标，让编码器保留与指令、物体和动作阶段相关的视觉变化。</p>
+                    <span>01 · SYSTEM NEED</span>
+                    <h5>记忆系统需要什么</h5>
+                    <p>从连续第一视角中识别任务相关物体、关系与状态变化，为 grounding、关系建模和记忆更新提供依据。</p>
+                  </article>
+                  <article class="memory-bridge-highlight">
+                    <span>02 · MY METHOD</span>
+                    <h5>我如何训练编码器</h5>
+                    <p>用冻结 VLM 蒸馏指令条件下的帧间语义关系，并加入末端、关节与夹爪状态约束，学习任务与物理状态一致的表征。</p>
                   </article>
                   <article>
-                    <span class="responsibility-index">B</span>
-                    <h5>表征增强</h5>
-                    <p>用冻结 VLM 作为语义教师，把高层任务语义迁移到可高效部署的视觉表征中。</p>
-                  </article>
-                  <article>
-                    <span class="responsibility-index">C</span>
-                    <h5>关系与状态约束</h5>
-                    <p>联合建模帧间语义关系和末端、关节、夹爪状态，为连续操作提供物理一致性约束。</p>
-                  </article>
-                  <article>
-                    <span class="responsibility-index">D</span>
-                    <h5>记忆更新特征</h5>
-                    <p>为物体 grounding、关系建模与语义空间记忆更新提供稳定的任务相关特征。</p>
+                    <span>03 · SYSTEM VALUE</span>
+                    <h5>为记忆系统提供什么</h5>
+                    <p>输出可部署的 task-centric、state-aware 特征，支撑物体定位、关系更新与检索；部署阶段无需再次调用 VLM。</p>
                   </article>
                 </div>
-              </section>
-
-              <section class="case-section" aria-labelledby="memory-architecture-title">
-                <div class="case-section-title">
-                  <span>02</span>
-                  <div><p>SYSTEM FLOW</p><h4 id="memory-architecture-title">从观察到可检索记忆</h4></div>
-                </div>
-                <ol class="architecture-flow">
-                  <li><span>01</span><b>Egocentric Frames</b><small>连续第一视角操作观察</small></li>
-                  <li><span>02</span><b>Instruction</b><small>用任务指令筛选关键视觉变化</small></li>
-                  <li><span>03</span><b>Frozen VLM Teacher</b><small>生成帧间任务语义关系监督</small></li>
-                  <li><span>04</span><b>Robot State</b><small>末端、关节与夹爪连续约束</small></li>
-                  <li><span>05</span><b>Visual Encoder</b><small>蒸馏为部署友好的任务表征</small></li>
-                  <li><span>06</span><b>Spatial Memory</b><small>物体级更新、关系建模与检索</small></li>
-                </ol>
               </section>
 
               <section class="case-section case-outcome" aria-labelledby="memory-outcome-title">
                 <div class="case-section-title">
-                  <span>03</span>
-                  <div><p>VALIDATION</p><h4 id="memory-outcome-title">数据、评测与真机验证</h4></div>
+                  <span>02</span>
+                  <div><p>OUTCOME</p><h4 id="memory-outcome-title">成果与系统价值</h4></div>
                 </div>
                 <div class="outcome-grid">
-                  <div><strong>≈ 36K</strong><span>DROID 轨迹用于视觉预训练</span></div>
-                  <div><strong>15 / 17</strong><span>仿真任务达到最优或并列最优</span></div>
-                  <div><strong>VLM-free</strong><span>部署阶段无需调用 VLM</span></div>
-                  <div><strong>Franka</strong><span>真机部署并展现环境噪声鲁棒性</span></div>
+                  <div><strong>Task-centric</strong><span>为物体 grounding、关系建模与语义记忆更新提供任务相关视觉表征</span></div>
+                  <div><strong>≈ 36K · 15/17</strong><span>利用规模化 DROID 轨迹预训练，17 项任务中 15 项最优或并列最优</span></div>
+                  <div><strong>Robust</strong><span>Franka 真机部署并展现对环境噪声的鲁棒性，推理阶段保持 VLM-free</span></div>
+                  <div><strong>Aux Encoder</strong><span>可进一步作为 VLA 的辅助视觉编码器，提供目标 grounding 与操作先验</span></div>
                 </div>
               </section>
 

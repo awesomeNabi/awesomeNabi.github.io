@@ -250,7 +250,7 @@ main {
 }
 
 .tracking-heading {
-  min-height: 188px;
+  min-height: 154px;
   padding: 28px 22px;
   display: flex;
   flex-direction: column;
@@ -271,7 +271,7 @@ main {
 }
 
 .tracking-heading h2 {
-  margin: 8px 0 2px;
+  margin: 8px 0 0;
   font-size: 26px;
   line-height: 1.25;
   letter-spacing: -0.04em;
@@ -967,15 +967,16 @@ main {
 .about-lead {
   max-width: 790px;
   margin: 28px 0 0;
-  color: var(--ink-soft);
-  font-size: clamp(21px, 2.4vw, 29px);
-  font-weight: 600;
-  line-height: 1.58;
-  letter-spacing: -0.035em;
+  color: var(--muted);
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 480;
+  line-height: 1.78;
+  letter-spacing: -0.015em;
 }
 
 .about-lead em {
-  color: var(--blue);
+  color: var(--ink-soft);
+  font-weight: 650;
   font-style: normal;
 }
 
@@ -1919,23 +1920,20 @@ a.text-link:hover span {
 
 .contact-panel {
   margin-top: 26px;
-  padding: clamp(30px, 5vw, 58px);
+  padding: clamp(28px, 3.5vw, 40px);
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  align-items: end;
-  gap: 40px;
-  background:
-    radial-gradient(circle at 82% 0%, rgba(82, 166, 242, 0.2), transparent 28rem),
-    rgba(255, 255, 255, 0.9);
+  grid-template-columns: minmax(180px, 0.42fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: var(--radius-xl);
 }
 
 .contact-panel h2 {
-  max-width: 700px;
-  margin: 8px 0 0;
-  font-size: clamp(31px, 4.2vw, 52px);
-  line-height: 1.25;
-  letter-spacing: -0.055em;
+  margin: 6px 0 0;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
 }
 
 .contact-links {

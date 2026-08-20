@@ -1,8 +1,8 @@
 # 谢思宇 · Siyu Xie — Personal Homepage
 
-一个零依赖的静态个人主页，围绕 `About / Research / Projects` 三个主栏目展开。
+一个零依赖的静态个人主页，围绕 `About / Research / Intern / Projects` 四个主栏目展开。
 
-视觉上采用“秋招雷达”的冷白浅蓝背景、状态信号与编号信息卡；结构上参考 setsaile 的左侧个人档案栏和右侧学术内容区。Projects 只保留两个同级案例：Geek Mind 具身 Agent 平台，以及操作中构建记忆系统；项目内容按照“项目介绍 / 个人负责 / 技术架构 / 真机部署或验证结果”展开。
+视觉上采用“秋招雷达”的冷白浅蓝背景、状态信号与编号信息卡；结构上参考 setsaile 的左侧个人档案栏和右侧学术内容区。Intern 呈现蚂蚁集团数据智能引擎的 MemX / Ekko 实习项目，聚焦群聊环境下的多模态 Agent 记忆链路，按“在线接入 / 异步建模 / 检索回流 / 实习流程事项”展开；Projects 保留 Geek Mind 具身 Agent 平台与操作中构建记忆系统两个同级案例。
 
 ## 本地预览
 

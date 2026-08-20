@@ -6,6 +6,19 @@ const sections = navLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
 
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+const autoplayVideos = [...document.querySelectorAll("video[autoplay]")];
+
+const syncAutoplayVideos = () => {
+  autoplayVideos.forEach((video) => {
+    if (motionPreference.matches) video.pause();
+    else video.play().catch(() => {});
+  });
+};
+
+syncAutoplayVideos();
+motionPreference.addEventListener?.("change", syncAutoplayVideos);
+
 const activateNav = (hash) => {
   navLinks.forEach((link) => {
     const active = link.getAttribute("href") === hash;
@@ -16,6 +29,7 @@ const activateNav = (hash) => {
 };
 
 let manualNavigationUntil = 0;
+let manualNavigationTimer = 0;
 
 navLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
@@ -25,11 +39,12 @@ navLinks.forEach((link) => {
 
     event.preventDefault();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    manualNavigationUntil = performance.now() + (reduceMotion ? 120 : 900);
+    manualNavigationUntil = performance.now() + (reduceMotion ? 120 : 1800);
     activateNav(hash);
     target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
     history.replaceState(null, "", hash);
-    window.setTimeout(syncActiveNav, reduceMotion ? 150 : 950);
+    window.clearTimeout(manualNavigationTimer);
+    manualNavigationTimer = window.setTimeout(syncActiveNav, reduceMotion ? 150 : 1850);
   });
 });
 

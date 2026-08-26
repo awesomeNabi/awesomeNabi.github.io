@@ -21,12 +21,115 @@
     <title>谢思宇 Siyu Xie — Embodied AI Researcher</title>
     <link rel="canonical" href="https://awesomenabi.github.io/" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="assets/binary-portrait-source.png" as="image" type="image/png" />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
   </head>
 
   <body>
     <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <section class="portal-cover" id="cover" data-cover aria-labelledby="cover-title">
+      <div class="portal-cover__scene" data-cover-scene>
+        <canvas class="portal-cover__fluid" data-fluid-canvas aria-hidden="true"></canvas>
+        <div class="portal-cover__grid" aria-hidden="true"></div>
+
+        <svg class="cover-filter-defs" width="0" height="0" aria-hidden="true">
+          <filter id="cover-fluid-distortion" x="-18%" y="-18%" width="136%" height="136%">
+            <feTurbulence
+              id="cover-turbulence"
+              type="fractalNoise"
+              baseFrequency="0.009 0.015"
+              numOctaves="2"
+              seed="11"
+              result="noise"
+            />
+            <feDisplacementMap
+              id="cover-displacement"
+              in="SourceGraphic"
+              in2="noise"
+              scale="0"
+              xChannelSelector="R"
+              yChannelSelector="B"
+            />
+          </filter>
+        </svg>
+
+        <div class="portal-cover__masthead" aria-label="封面信息">
+          <a class="cover-mark" href="#top" aria-label="进入谢思宇个人主页">
+            <span>SY</span>
+            <b>PORTFOLIO / 2026</b>
+          </a>
+          <p><i aria-hidden="true"></i> BINARY PORTRAIT ONLINE</p>
+        </div>
+
+        <div class="portal-cover__stage" data-cover-stage>
+          <div class="portal-cover__copy">
+            <p class="cover-kicker">ENTRY SEQUENCE / 00</p>
+            <h1 id="cover-title">谢思宇<span>Siyu Xie</span></h1>
+            <p>Embodied AI · Robot Learning<br />Multimodal Agent Memory</p>
+          </div>
+
+          <figure class="binary-portrait" data-binary-portrait>
+            <div class="binary-portrait__halo" aria-hidden="true"></div>
+            <div class="binary-portrait__stack">
+              <img
+                class="binary-portrait__fallback"
+                src="assets/binary-portrait-fallback.webp"
+                alt=""
+                width="900"
+                height="900"
+              />
+              <canvas
+                class="binary-portrait__canvas"
+                data-binary-canvas
+                width="900"
+                height="900"
+                role="img"
+                aria-label="由随机 0 和 1 逐步组成的人物插画"
+              ></canvas>
+            </div>
+
+            <div class="welcome-bubble" aria-label="人物说：welcome">
+              <span>welcome</span>
+            </div>
+
+            <figcaption>
+              <span><i aria-hidden="true"></i> RANDOMIZED GLYPHS</span>
+              <span>SEED <b data-binary-seed>00000000</b></span>
+            </figcaption>
+          </figure>
+
+          <dl class="portal-cover__spec">
+            <div><dt>INPUT</dt><dd>0 / 1</dd></div>
+            <div><dt>EFFECT</dt><dd>POINTER FLUID</dd></div>
+            <div><dt>NEXT</dt><dd>PERSONAL HOMEPAGE</dd></div>
+          </dl>
+        </div>
+
+        <a class="cover-scroll-cue" href="#top" data-scroll-start>
+          <span>SCROLL TO VIEW / START</span>
+          <i aria-hidden="true"><b></b></i>
+        </a>
+
+        <div class="cover-progress" aria-hidden="true">
+          <span>00</span>
+          <i><b data-cover-progress></b></i>
+          <span>01</span>
+        </div>
+
+        <img
+          id="binary-portrait-source"
+          src="assets/binary-portrait-source.png"
+          alt=""
+          width="512"
+          height="512"
+          hidden
+        />
+      </div>
+    </section>
+
+    <div class="site-content" data-site-content>
 
     <header class="site-header" data-header>
       <div class="header-inner">
@@ -695,5 +798,6 @@
       <p>Embodied AI · Robot Learning · Agent Systems</p>
       <a href="#top">返回顶部 ↑</a>
     </footer>
+    </div>
   </body>
 </html>

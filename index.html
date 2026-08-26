@@ -100,16 +100,23 @@
             </figcaption>
           </figure>
 
-          <dl class="portal-cover__spec">
-            <div><dt>INPUT</dt><dd>0 / 1</dd></div>
-            <div><dt>EFFECT</dt><dd>POINTER FLUID</dd></div>
-            <div><dt>NEXT</dt><dd>PERSONAL HOMEPAGE</dd></div>
-          </dl>
         </div>
 
-        <a class="cover-scroll-cue" href="#top" data-scroll-start>
-          <span>SCROLL TO VIEW / START</span>
-          <i aria-hidden="true"><b></b></i>
+        <a
+          class="cover-scroll-cue"
+          href="#top"
+          data-scroll-start
+          aria-label="向下滚动进入个人主页"
+        >
+          <span class="cover-scroll-cue__label">
+            <b>SCROLL TO VIEW</b>
+            <small>PERSONAL HOMEPAGE</small>
+          </span>
+          <span class="cover-scroll-cue__arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 4v14m-6-6 6 6 6-6" />
+            </svg>
+          </span>
         </a>
 
         <div class="cover-progress" aria-hidden="true">

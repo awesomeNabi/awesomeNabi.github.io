@@ -23,27 +23,38 @@ const setupCoverTransition = () => {
   if (!cover || !siteContent) return;
 
   let framePending = false;
+  let snapTimer = 0;
+  let snapLockUntil = 0;
+  let scrollDirection = 1;
+  let previousScrollY = window.scrollY;
 
   const getEntryScrollTop = () =>
     cover.offsetTop + Math.max(0, cover.offsetHeight - window.innerHeight);
 
-  const updateCover = () => {
+  const getCoverProgress = () => {
     const scrollSpan = Math.max(1, cover.offsetHeight - window.innerHeight);
-    const progress = clampUnit((window.scrollY - cover.offsetTop) / scrollSpan);
-    const coverExit = smoothStep(0.42, 1, progress);
-    const siteReveal = smoothStep(0.43, 0.98, progress);
+    return clampUnit((window.scrollY - cover.offsetTop) / scrollSpan);
+  };
+
+  const updateCover = () => {
+    const progress = getCoverProgress();
+    const coverExit = smoothStep(0.05, 0.78, progress);
+    const cueExit = smoothStep(0.1, 0.42, progress);
+    const siteReveal = smoothStep(0.08, 0.72, progress);
 
     coverProgressValue = progress;
     document.documentElement.style.setProperty("--cover-progress", progress.toFixed(4));
-    document.documentElement.style.setProperty("--cover-scene-shift", `${(-17 * coverExit).toFixed(3)}svh`);
-    document.documentElement.style.setProperty("--cover-scale", (1 - 0.11 * coverExit).toFixed(4));
-    document.documentElement.style.setProperty("--cover-opacity", Math.max(0.04, 1 - 0.96 * coverExit).toFixed(4));
-    document.documentElement.style.setProperty("--cover-copy-shift", `${(-52 * coverExit).toFixed(2)}px`);
+    document.documentElement.style.setProperty("--cover-scene-shift", `${(-7 * coverExit).toFixed(3)}svh`);
+    document.documentElement.style.setProperty("--cover-scale", (1 - 0.045 * coverExit).toFixed(4));
+    document.documentElement.style.setProperty("--cover-opacity", Math.max(0.02, 1 - 0.98 * coverExit).toFixed(4));
+    document.documentElement.style.setProperty("--cover-cue-opacity", Math.max(0, 1 - cueExit).toFixed(4));
+    document.documentElement.style.setProperty("--cover-copy-shift", `${(-22 * coverExit).toFixed(2)}px`);
     document.documentElement.style.setProperty("--site-reveal", siteReveal.toFixed(4));
-    document.documentElement.style.setProperty("--site-shift", `${(18 * (1 - siteReveal)).toFixed(3)}svh`);
-    document.documentElement.style.setProperty("--site-opacity", (0.16 + 0.84 * siteReveal).toFixed(4));
+    document.documentElement.style.setProperty("--site-shift", `${(8 * (1 - siteReveal)).toFixed(3)}svh`);
+    document.documentElement.style.setProperty("--site-opacity", siteReveal.toFixed(4));
     const transitioned = progress > 0.985;
     cover.classList.toggle("is-transitioned", transitioned);
+    cover.classList.toggle("is-cue-hidden", progress > 0.42);
     siteContent.classList.toggle("is-transitioned", transitioned);
     window.dispatchEvent(new CustomEvent("coverprogresschange", { detail: { progress } }));
     framePending = false;
@@ -55,18 +66,51 @@ const setupCoverTransition = () => {
     window.requestAnimationFrame(updateCover);
   };
 
+  const snapTo = (top, hash = "") => {
+    snapLockUntil = performance.now() + 1000;
+    window.clearTimeout(snapTimer);
+    window.scrollTo({
+      top,
+      behavior: motionPreference.matches ? "auto" : "smooth",
+    });
+
+    if (hash) history.replaceState(null, "", hash);
+    else history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+  };
+
+  const snapCoverAtThreshold = () => {
+    if (motionPreference.matches || performance.now() < snapLockUntil) return;
+
+    const progress = getCoverProgress();
+    if (progress <= 0.01 || progress >= 0.985) return;
+
+    if (scrollDirection > 0 && progress >= 0.56) {
+      snapTo(getEntryScrollTop(), "#top");
+    } else if (scrollDirection < 0 && progress <= 0.44) {
+      snapTo(cover.offsetTop);
+    }
+  };
+
+  const handleCoverScroll = () => {
+    const currentScrollY = window.scrollY;
+    const delta = currentScrollY - previousScrollY;
+    if (Math.abs(delta) > 1) scrollDirection = Math.sign(delta);
+    previousScrollY = currentScrollY;
+    requestCoverUpdate();
+
+    if (performance.now() < snapLockUntil) return;
+    window.clearTimeout(snapTimer);
+    snapTimer = window.setTimeout(snapCoverAtThreshold, 170);
+  };
+
   entryLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      window.scrollTo({
-        top: getEntryScrollTop(),
-        behavior: motionPreference.matches ? "auto" : "smooth",
-      });
-      history.replaceState(null, "", "#top");
+      snapTo(getEntryScrollTop(), "#top");
     });
   });
 
-  window.addEventListener("scroll", requestCoverUpdate, { passive: true });
+  window.addEventListener("scroll", handleCoverScroll, { passive: true });
   window.addEventListener("resize", requestCoverUpdate, { passive: true });
   window.addEventListener("pageshow", requestCoverUpdate);
   updateCover();

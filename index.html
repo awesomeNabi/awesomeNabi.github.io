@@ -11,7 +11,7 @@
     <meta property="og:title" content="谢思宇 Siyu Xie — Embodied AI Researcher" />
     <meta
       property="og:description"
-      content="Robot learning, embodied agents, and multimodal group-chat memory systems, including the MemX / Ekko pipeline."
+      content="Robot learning, embodied agents, and long-horizon multimodal memory systems for group-chat scenarios."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://awesomenabi.github.io/" />
@@ -362,44 +362,35 @@
                 <p class="section-index"><span>03</span> INTERN</p>
                 <h2 id="intern-title">实习交流</h2>
               </div>
-              <p class="section-side-note">蚂蚁集团数据智能引擎 · 群聊记忆链路与工程事项</p>
+              <p class="section-side-note">蚂蚁集团 · 多模态 Memory 算法实习</p>
             </header>
 
-            <article class="intern-spotlight" aria-labelledby="ekko-title">
+            <article class="intern-spotlight" aria-labelledby="intern-spotlight-title">
               <div class="intern-spotlight-copy">
                 <div class="intern-eyebrow">
-                  <span>MEMX / EKKO</span>
+                  <span>MULTIMODAL MEMORY</span>
                   <span class="intern-signal"><i aria-hidden="true"></i> GROUP-CHAT MEMORY</span>
                 </div>
-                <p class="intern-affiliation"><span>INTERNSHIP</span> 蚂蚁集团 · 数据智能引擎</p>
-                <h3 id="ekko-title">Ekko — 面向群聊环境的多模态 Agent 记忆链路</h3>
+                <p class="intern-affiliation"><span>INTERNSHIP</span> 蚂蚁集团 · 多模态 Memory 算法实习生</p>
+                <h3 id="intern-spotlight-title">长周期、多会话、多模态用户理解记忆系统</h3>
                 <p class="intern-lead">
-                  Ekko 基于 MemX V2 统一 <code>add / search</code> 流水线，以 profile 形式承载群聊事实记忆，
-                  把持续、多主体的群聊与系统层归一化后的多模态描述整理为可写入、可检索、可供 Agent 使用的长期上下文。
+                  面向家庭健康助手、医疗群聊等场景，把持续产生的多主体群聊沉淀为结构化长期事实，
+                  通过统一的 <code>add / search</code> 全链路，为上层 Agent 提供可写入、可检索的个性化上下文。
                 </p>
                 <p>
-                  在线路径只完成输入校验、上下文封装与短时记忆缓冲；达到触发条件后，异步 worker 再执行
-                  turn 合并、topic 识别、结构化事实抽取、记忆决策与统一写入。检索侧通过多路召回、融合去重与重排，
+                  在线路径只完成入参校验、上下文封装与短时记忆缓冲；达到触发条件后，异步 worker 再执行
+                  轮次合并、话题聚类、结构化事实抽取、记忆决策与统一写入。检索侧通过多路召回、融合去重与重排，
                   将相关记忆交还给上层 Agent。
                 </p>
-                <div class="intern-actions">
-                  <a
-                    class="button button-primary"
-                    href="https://origin.cursor.com/siyu-xie/memx.git"
-                    target="_blank"
-                    rel="noreferrer"
-                  >Origin Repository <span>↗</span></a>
-                  <span class="repo-access-note">PRIVATE · 访问需仓库权限</span>
-                </div>
               </div>
 
-              <aside class="intern-runtime" aria-label="Ekko 运行契约">
-                <p class="intern-runtime-label">RUNTIME CONTRACT</p>
+              <aside class="intern-runtime" aria-label="记忆系统运行概览">
+                <p class="intern-runtime-label">SYSTEM PROFILE</p>
                 <dl>
-                  <div><dt>Profile</dt><dd>ekko_v5_lite</dd></div>
-                  <div><dt>Input</dt><dd>Normalized chat content</dd></div>
-                  <div><dt>Memory</dt><dd>ekko_mem</dd></div>
-                  <div><dt>Interface</dt><dd>V2 add / search</dd></div>
+                  <div><dt>Scenario</dt><dd>群聊 · 多会话</dd></div>
+                  <div><dt>Input</dt><dd>归一化消息 + 身份元数据</dd></div>
+                  <div><dt>Memory</dt><dd>结构化长期事实</dd></div>
+                  <div><dt>Interface</dt><dd>Add / Search</dd></div>
                 </dl>
                 <div class="runtime-boundaries">
                   <p><span>ONLINE</span> 校验 · 封装 · STM</p>
@@ -409,28 +400,28 @@
               </aside>
             </article>
 
-            <section class="intern-block" aria-labelledby="ekko-flow-title">
+            <section class="intern-block" aria-labelledby="intern-overview-title">
               <div class="intern-block-heading">
                 <div>
-                  <p>01 / END-TO-END PIPELINE</p>
-                  <h3 id="ekko-flow-title">从群聊事件到 Agent 上下文</h3>
+                  <p>01 / PROJECT OVERVIEW</p>
+                  <h3 id="intern-overview-title">项目概览</h3>
                 </div>
                 <p>在线链路保持轻量，记忆建模异步完成，检索按独立契约回流。</p>
               </div>
 
-              <div class="flow-lanes" aria-label="Ekko 端到端流程">
+              <div class="flow-lanes" aria-label="记忆系统链路概览">
                 <article class="flow-lane flow-lane-online">
                   <div class="flow-lane-label"><span>01</span><b>ONLINE</b><small>低延迟接入</small></div>
                   <ol class="flow-track flow-track-2">
                     <li>
                       <span>INPUT</span>
-                      <strong>群聊事件进入</strong>
-                      <small>输入校验与上下文封装，接收系统层归一化后的消息内容。</small>
+                      <strong>群聊事件接入</strong>
+                      <small>入参校验与上下文封装，接收系统层归一化后的消息内容。</small>
                     </li>
                     <li>
                       <span>STM</span>
                       <strong>短时缓冲与触发</strong>
-                      <small>按消息量或空闲时间聚合，达到条件后提交异步任务。</small>
+                      <small>带身份与时间元数据的原文写入短时记忆，按消息量或空闲时间触发。</small>
                     </li>
                   </ol>
                 </article>
@@ -440,23 +431,23 @@
                   <ol class="flow-track flow-track-4">
                     <li>
                       <span>LOAD</span>
-                      <strong>Hydrate Units</strong>
-                      <small>恢复原始消息单元与运行上下文，进入后台处理阶段。</small>
+                      <strong>消息单元恢复</strong>
+                      <small>后台还原原始消息单元与运行上下文，进入异步处理阶段。</small>
                     </li>
                     <li>
                       <span>STRUCTURE</span>
-                      <strong>Turn / Topic</strong>
-                      <small>将连续消息合并为 turn，并组织为可建模的主题单元。</small>
+                      <strong>轮次合并与话题聚类</strong>
+                      <small>将连续消息合并为轮次，并组织为可建模的话题单元。</small>
                     </li>
                     <li class="flow-step-emphasis">
                       <span>MODEL</span>
-                      <strong>Fact Extraction</strong>
-                      <small>结构化事实抽取、主体解析、规范化与最小有效性检查。</small>
+                      <strong>结构化事实抽取</strong>
+                      <small>LLM 抽取事实，完成主体解析、规范化与最小有效性检查。</small>
                     </li>
                     <li>
                       <span>WRITE</span>
-                      <strong>Decision / Store</strong>
-                      <small>候选进入 ADD / NOOP 决策，再经统一 writer 写入长期向量记忆。</small>
+                      <strong>记忆决策与落库</strong>
+                      <small>相似召回后进入 ADD / NOOP 决策，去重后写入长期向量记忆。</small>
                     </li>
                   </ol>
                 </article>
@@ -466,86 +457,67 @@
                   <ol class="flow-track flow-track-3">
                     <li>
                       <span>QUERY</span>
-                      <strong>Query / Subject</strong>
+                      <strong>检索意图与事实主体</strong>
                       <small>解析检索意图与事实主体，形成结构化检索请求。</small>
                     </li>
                     <li>
                       <span>RECALL</span>
-                      <strong>Hybrid Retrieval</strong>
-                      <small>Vector、BM25 与 category 等通道并行召回候选。</small>
+                      <strong>多路召回</strong>
+                      <small>向量、BM25 与分类等通道并行召回候选。</small>
                     </li>
                     <li>
                       <span>RANK</span>
-                      <strong>Fusion / CE Score</strong>
-                      <small>融合、同记录去重、软时间过滤与 CE fallback 后输出给 Agent。</small>
+                      <strong>融合重排</strong>
+                      <small>融合去重、软时间过滤与重排后，将相关记忆输出给 Agent。</small>
                     </li>
                   </ol>
                 </article>
               </div>
             </section>
 
-            <section class="intern-block" aria-labelledby="ekko-work-title">
+            <section class="intern-block" aria-labelledby="intern-work-title">
               <div class="intern-block-heading">
                 <div>
                   <p>02 / WORK ITEMS</p>
-                  <h3 id="ekko-work-title">实习流程事项</h3>
+                  <h3 id="intern-work-title">实习流程事项</h3>
                 </div>
-                <p>以接口契约、异步边界、记忆质量和回归验证组织协作。</p>
+                <p>个人负责 Add 侧的入参身份统一与条件异步存储两条主线。</p>
               </div>
 
               <div class="intern-work-grid">
                 <article>
                   <span class="work-index">A</span>
-                  <p class="work-kicker">PIPELINE CONTRACT</p>
-                  <h4>输入身份与阶段契约</h4>
-                  <p>对齐时间、speaker / subject、归一化消息内容及阶段输入输出，让群聊 profile 复用统一 add / search 运行时。</p>
-                  <small>Identity · Stage I/O · Profile / Hook</small>
+                  <p class="work-kicker">IDENTITY UNIFICATION</p>
+                  <h4>入参规范与会话隔离</h4>
+                  <p>规范 messages 与 user / agent / run / actor / group 等身份入参，明确会话隔离边界与各阶段输入输出，让不同群聊场景复用同一套 add / search 运行时。</p>
+                  <small>Message schema · Identity fields · Session scope</small>
                 </article>
                 <article>
                   <span class="work-index">B</span>
-                  <p class="work-kicker">ASYNC BOUNDARY</p>
-                  <h4>在线与后台解耦</h4>
-                  <p>让在线侧只承担轻量校验和 STM 聚合，并保证 accepted 任务在后台恢复完整消息与运行上下文。</p>
-                  <small>STM 触发 · Worker hydrate · 链路追踪</small>
+                  <p class="work-kicker">IDENTITY UNIFICATION</p>
+                  <h4>主体注册与称谓归一</h4>
+                  <p>通过主体注册与称谓归一区分说话人与事实主体，解决群聊转述场景下的身份错配，保证事实归属到正确的人。</p>
+                  <small>Subject registry · Alias normalize · Speaker vs subject</small>
                 </article>
                 <article>
                   <span class="work-index">C</span>
-                  <p class="work-kicker">MEMORY QUALITY</p>
-                  <h4>事实粒度与候选质量</h4>
-                  <p>围绕 turn、topic 与 fact 的边界设计抽取、主体解析和规范化；以最小有效性检查形成候选，并继续增强 grounding 与写入去重。</p>
-                  <small>Structured extraction · Normalize · Grounding</small>
+                  <p class="work-kicker">ASYNC WRITE PATH</p>
+                  <h4>在线校验与短时缓冲</h4>
+                  <p>在线阶段只做入参校验与上下文封装，将带身份及时间元数据的群聊原文写入短时记忆，按协议触发后台任务，使复杂群聊下的写入延迟由秒级降至毫秒级。</p>
+                  <small>Validate · Context package · STM trigger</small>
                 </article>
                 <article>
                   <span class="work-index">D</span>
-                  <p class="work-kicker">RETRIEVAL &amp; QA</p>
-                  <h4>召回闭环与回归验证</h4>
-                  <p>覆盖主体解析、多路召回、融合重排和时间过滤，并用单元、Mock E2E 与链路样例持续验证行为。</p>
-                  <small>Hybrid recall · Ranking · Tests</small>
+                  <p class="work-kicker">ASYNC WRITE PATH</p>
+                  <h4>后台记忆构建与落库</h4>
+                  <p>后台恢复消息单元后构造记忆单元，以统一结构承载文本事实与图片描述，依次完成轮次合并、话题聚类、事实抽取、相似召回与记忆决策，去重后写入长期记忆。</p>
+                  <small>Hydrate · Turn / Topic · Decision &amp; dedup</small>
                 </article>
               </div>
             </section>
 
-            <div class="intern-principles" aria-label="Ekko 实习交流重点">
-              <div>
-                <p class="micro-label">交流重点</p>
-                <h3>不只“存下来”，而是建立可用的记忆边界</h3>
-              </div>
-              <ul>
-                <li><b>主体归属</b><span>多人群聊中的事实属于谁，如何保留话题与关系上下文。</span></li>
-                <li><b>多模态边界</b><span>系统层负责图片、音频转文本；Ekko 主链消费归一化消息内容。</span></li>
-                <li><b>异步一致性</b><span>在线响应、后台建模与最终写入之间如何保持可追踪。</span></li>
-                <li><b>可回归质量</b><span>抽取、决策和检索每一段都需要可测试的输入输出。</span></li>
-              </ul>
-            </div>
-
             <div class="intern-sourcebar">
-              <p>页面仅展示可公开的链路级信息；配置、策略实现与测试细节以仓库为准。</p>
-              <a
-                class="button button-secondary"
-                href="https://origin.cursor.com/siyu-xie/memx.git"
-                target="_blank"
-                rel="noreferrer"
-              >Private Origin 源码 <span>↗</span></a>
+              <p>页面仅展示可公开的链路级信息，不涉及具体实现、配置、策略与业务数据。</p>
             </div>
           </section>
 

@@ -119,15 +119,22 @@ const setupCoverTransition = () => {
 const setupBinaryPortrait = () => {
   const figure = document.querySelector("[data-binary-portrait]");
   const canvas = document.querySelector("[data-binary-canvas]");
+  const lensCanvas = document.querySelector("[data-binary-lens]");
   const image = document.querySelector("#binary-portrait-source");
   const seedLabel = document.querySelector("[data-binary-seed]");
   const context = canvas?.getContext("2d");
+  const lensContext = lensCanvas?.getContext("2d");
 
-  if (!figure || !canvas || !image || !context) return;
+  if (!figure || !canvas || !lensCanvas || !image || !context || !lensContext) return;
 
   let animationFrame = 0;
   let resizeTimer = 0;
   let hasAnimated = false;
+  let portraitSize = 0;
+  let portraitPixelRatio = 1;
+  let lensPoint = { x: 0, y: 0 };
+  let lensActive = false;
+  let touchLensTimer = 0;
 
   const createSeed = () => {
     if (window.crypto?.getRandomValues) {
@@ -136,6 +143,95 @@ const setupBinaryPortrait = () => {
       return seedBuffer[0] || 1;
     }
     return (Date.now() ^ Math.floor(performance.now() * 1000)) >>> 0;
+  };
+
+  const clearLens = () => {
+    lensContext.setTransform(1, 0, 0, 1, 0, 0);
+    lensContext.clearRect(0, 0, lensCanvas.width, lensCanvas.height);
+  };
+
+  const hideLens = () => {
+    lensActive = false;
+    figure.classList.remove("is-lens-active");
+    clearLens();
+  };
+
+  const drawLens = () => {
+    if (!lensActive || !portraitSize || motionPreference.matches) return;
+
+    const radius = Math.max(50, Math.min(86, portraitSize * 0.115));
+    const zoom = 1.68;
+    const x = Math.max(radius, Math.min(portraitSize - radius, lensPoint.x));
+    const y = Math.max(radius, Math.min(portraitSize - radius, lensPoint.y));
+    const sourceRadius = radius / zoom;
+
+    clearLens();
+    lensContext.setTransform(portraitPixelRatio, 0, 0, portraitPixelRatio, 0, 0);
+    lensContext.save();
+    lensContext.beginPath();
+    lensContext.arc(x, y, radius, 0, Math.PI * 2);
+    lensContext.clip();
+    lensContext.fillStyle = "rgba(255, 255, 255, 0.9)";
+    lensContext.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+    lensContext.drawImage(
+      canvas,
+      (x - sourceRadius) * portraitPixelRatio,
+      (y - sourceRadius) * portraitPixelRatio,
+      sourceRadius * 2 * portraitPixelRatio,
+      sourceRadius * 2 * portraitPixelRatio,
+      x - radius,
+      y - radius,
+      radius * 2,
+      radius * 2,
+    );
+
+    const glass = lensContext.createRadialGradient(
+      x - radius * 0.34,
+      y - radius * 0.38,
+      0,
+      x,
+      y,
+      radius,
+    );
+    glass.addColorStop(0, "rgba(255, 255, 255, 0.28)");
+    glass.addColorStop(0.58, "rgba(255, 255, 255, 0)");
+    glass.addColorStop(1, "rgba(24, 65, 99, 0.08)");
+    lensContext.fillStyle = glass;
+    lensContext.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+    lensContext.restore();
+
+    lensContext.beginPath();
+    lensContext.arc(x, y, radius - 1.5, 0, Math.PI * 2);
+    lensContext.lineWidth = 3;
+    lensContext.strokeStyle = "rgba(255, 255, 255, 0.96)";
+    lensContext.stroke();
+    lensContext.beginPath();
+    lensContext.arc(x, y, radius - 4.5, 0, Math.PI * 2);
+    lensContext.lineWidth = 1.35;
+    lensContext.strokeStyle = "rgba(28, 72, 106, 0.72)";
+    lensContext.stroke();
+    lensContext.beginPath();
+    lensContext.arc(x, y, radius - 7, -2.7, -1.25);
+    lensContext.lineWidth = 3;
+    lensContext.strokeStyle = "rgba(255, 194, 63, 0.92)";
+    lensContext.stroke();
+  };
+
+  const updateLens = (event) => {
+    const bounds = canvas.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+
+    const x = ((event.clientX - bounds.left) / bounds.width) * portraitSize;
+    const y = ((event.clientY - bounds.top) / bounds.height) * portraitSize;
+    if (x < 0 || x > portraitSize || y < 0 || y > portraitSize) {
+      hideLens();
+      return;
+    }
+
+    lensPoint = { x, y };
+    lensActive = true;
+    figure.classList.add("is-lens-active");
+    drawLens();
   };
 
   const renderPortrait = (animate = true) => {
@@ -157,6 +253,11 @@ const setupBinaryPortrait = () => {
     canvas.width = Math.round(size * pixelRatio);
     canvas.height = Math.round(size * pixelRatio);
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    lensCanvas.width = canvas.width;
+    lensCanvas.height = canvas.height;
+    portraitSize = size;
+    portraitPixelRatio = pixelRatio;
+    clearLens();
 
     const targetCanvas = document.createElement("canvas");
     targetCanvas.width = size;
@@ -173,8 +274,9 @@ const setupBinaryPortrait = () => {
     targetContext.drawImage(image, drawX, drawY, drawWidth, drawHeight);
 
     const pixels = targetContext.getImageData(0, 0, size, size).data;
-    const cellSize = Math.max(6.4, Math.min(10.5, size / 94));
-    const fontSize = cellSize * 1.13;
+    const cellSize = Math.max(4.8, Math.min(7.4, size / 118));
+    const fontSize = cellSize * 1.28;
+    const featurePalette = ["#244f70", "#326686", "#467b9a", "#5f91ad", "#789fb5"];
     const cells = [];
 
     for (let y = cellSize / 2; y < size; y += cellSize) {
@@ -189,14 +291,19 @@ const setupBinaryPortrait = () => {
         if (alpha < 28) continue;
 
         const luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-        const coverage = Math.min(1, alpha / 255) * (0.74 + ((255 - luminance) / 255) * 0.26);
+        const facialFeature = luminance < 88 && blue > red * 1.18 && blue > green * 1.06;
+        const coverage = facialFeature
+          ? Math.min(1, alpha / 232)
+          : Math.min(1, alpha / 255) * (0.96 + ((255 - luminance) / 255) * 0.04);
         if (random() > coverage) continue;
 
         const digit = random() > 0.5 ? "1" : "0";
         cells.push({
           x,
           y,
-          color: `rgb(${red}, ${green}, ${blue})`,
+          color: facialFeature
+            ? featurePalette[Math.floor(random() * featurePalette.length)]
+            : `rgb(${red}, ${green}, ${blue})`,
           digit,
           alternate: digit === "1" ? "0" : "1",
           delay: Math.pow(random(), 1.22) * 0.72,
@@ -235,6 +342,7 @@ const setupBinaryPortrait = () => {
 
       context.globalAlpha = 1;
       figure.classList.add("is-canvas-ready");
+      if (lensActive) drawLens();
 
       if (progress < 1) animationFrame = window.requestAnimationFrame(drawFrame);
     };
@@ -257,6 +365,32 @@ const setupBinaryPortrait = () => {
     },
     { once: true },
   );
+
+  figure.addEventListener(
+    "pointermove",
+    (event) => {
+      if (event.pointerType === "touch") return;
+      updateLens(event);
+    },
+    { passive: true },
+  );
+  figure.addEventListener("pointerleave", hideLens);
+  figure.addEventListener(
+    "pointerdown",
+    (event) => {
+      if (event.pointerType !== "touch") return;
+      window.clearTimeout(touchLensTimer);
+      updateLens(event);
+      touchLensTimer = window.setTimeout(hideLens, 850);
+    },
+    { passive: true },
+  );
+  window.addEventListener("coverprogresschange", (event) => {
+    if (event.detail?.progress > 0.08) hideLens();
+  });
+  motionPreference.addEventListener?.("change", () => {
+    if (motionPreference.matches) hideLens();
+  });
 
   window.addEventListener(
     "resize",
@@ -586,7 +720,6 @@ const setupFluidCover = () => {
 
 setupCoverTransition();
 setupBinaryPortrait();
-setupFluidCover();
 
 const autoplayVideos = [...document.querySelectorAll("video[autoplay]")];
 

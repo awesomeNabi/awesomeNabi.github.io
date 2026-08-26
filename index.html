@@ -22,8 +22,8 @@
     <link rel="canonical" href="https://awesomenabi.github.io/" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/binary-portrait-source.png" as="image" type="image/png" />
-    <link rel="stylesheet" href="styles.css?v=20260826-cover2" />
-    <script src="script.js?v=20260826-cover2" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260826-portrait3" />
+    <script src="script.js?v=20260826-portrait3" defer></script>
   </head>
 
   <body>
@@ -31,29 +31,7 @@
 
     <section class="portal-cover" id="cover" data-cover aria-labelledby="cover-title">
       <div class="portal-cover__scene" data-cover-scene>
-        <canvas class="portal-cover__fluid" data-fluid-canvas aria-hidden="true"></canvas>
         <div class="portal-cover__grid" aria-hidden="true"></div>
-
-        <svg class="cover-filter-defs" width="0" height="0" aria-hidden="true">
-          <filter id="cover-fluid-distortion" x="-18%" y="-18%" width="136%" height="136%">
-            <feTurbulence
-              id="cover-turbulence"
-              type="fractalNoise"
-              baseFrequency="0.009 0.015"
-              numOctaves="2"
-              seed="11"
-              result="noise"
-            />
-            <feDisplacementMap
-              id="cover-displacement"
-              in="SourceGraphic"
-              in2="noise"
-              scale="0"
-              xChannelSelector="R"
-              yChannelSelector="B"
-            />
-          </filter>
-        </svg>
 
         <div class="portal-cover__masthead" aria-label="封面信息">
           <a class="cover-mark" href="#top" aria-label="进入谢思宇个人主页">
@@ -88,6 +66,13 @@
                 role="img"
                 aria-label="由随机 0 和 1 逐步组成的人物插画"
               ></canvas>
+              <canvas
+                class="binary-portrait__lens"
+                data-binary-lens
+                width="900"
+                height="900"
+                aria-hidden="true"
+              ></canvas>
             </div>
 
             <div class="welcome-bubble" aria-label="人物说：welcome">
@@ -95,7 +80,7 @@
             </div>
 
             <figcaption>
-              <span><i aria-hidden="true"></i> RANDOMIZED GLYPHS</span>
+              <span><i aria-hidden="true"></i> MOVE TO MAGNIFY</span>
               <span>SEED <b data-binary-seed>00000000</b></span>
             </figcaption>
           </figure>

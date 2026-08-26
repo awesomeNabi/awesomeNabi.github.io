@@ -1996,19 +1996,6 @@ a.text-link:hover span {
   font-size: 0.86em;
 }
 
-.intern-actions {
-  margin-top: 25px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 13px;
-}
-
-.repo-access-note {
-  color: rgba(255, 255, 255, 0.42);
-  font-size: 9px;
-}
-
 .intern-runtime {
   padding: 24px 20px;
   align-self: stretch;
@@ -2333,63 +2320,11 @@ a.text-link:hover span {
   letter-spacing: 0.035em;
 }
 
-.intern-principles {
-  margin-top: 30px;
-  padding: 24px;
-  display: grid;
-  grid-template-columns: minmax(190px, 0.68fr) minmax(0, 1.32fr);
-  align-items: center;
-  gap: 28px;
-  background: linear-gradient(145deg, #e4f1ff, #f6faff);
-  border: 1px solid rgba(24, 135, 232, 0.12);
-  border-radius: 17px;
-}
-
-.intern-principles h3 {
-  margin: 7px 0 0;
-  font-size: 19px;
-  line-height: 1.35;
-  letter-spacing: -0.035em;
-}
-
-.intern-principles ul {
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 7px;
-  list-style: none;
-}
-
-.intern-principles li {
-  padding: 10px 12px;
-  display: grid;
-  grid-template-columns: 66px 1fr;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.68);
-  border: 1px solid rgba(24, 135, 232, 0.09);
-  border-radius: 10px;
-}
-
-.intern-principles b,
-.intern-principles span {
-  font-size: 9px;
-  line-height: 1.55;
-}
-
-.intern-principles b {
-  color: var(--blue-deep);
-}
-
-.intern-principles span {
-  color: var(--muted);
-}
-
 .intern-sourcebar {
-  margin-top: 10px;
+  margin-top: 30px;
   padding: 16px 18px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 18px;
   color: #fff;
   background: var(--ink);
@@ -2397,17 +2332,11 @@ a.text-link:hover span {
 }
 
 .intern-sourcebar p {
-  max-width: 510px;
+  max-width: 640px;
   margin: 0;
   color: rgba(255, 255, 255, 0.55);
   font-size: 9px;
   line-height: 1.6;
-}
-
-.intern-sourcebar .button {
-  min-height: 40px;
-  flex: 0 0 auto;
-  font-size: 11px;
 }
 
 .project-case-list {
@@ -3081,7 +3010,6 @@ a.text-link:hover span {
   .public-context,
   .flow-track li,
   .intern-work-grid article,
-  .intern-principles li,
   .responsibility-grid article,
   .architecture-flow li,
   .outcome-grid div {
@@ -3092,7 +3020,6 @@ a.text-link:hover span {
   .public-context:hover,
   .flow-track li:hover,
   .intern-work-grid article:hover,
-  .intern-principles li:hover,
   .responsibility-grid article:hover,
   .architecture-flow li:hover,
   .outcome-grid div:hover,
@@ -3453,11 +3380,6 @@ a.text-link:hover span {
     text-align: right;
   }
 
-  .intern-principles {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
   .case-heading {
     padding: 22px 18px;
     flex-direction: column;
@@ -3518,10 +3440,6 @@ a.text-link:hover span {
     padding: 18px;
     align-items: stretch;
     flex-direction: column;
-  }
-
-  .intern-sourcebar .button {
-    width: 100%;
   }
 
   .responsibility-grid article {
@@ -3626,10 +3544,6 @@ a.text-link:hover span {
     font-size: 25px;
   }
 
-  .intern-actions .button {
-    width: 100%;
-  }
-
   .intern-work-grid article {
     padding: 20px 18px 18px 54px;
   }
@@ -3637,15 +3551,6 @@ a.text-link:hover span {
   .work-index {
     top: 19px;
     left: 17px;
-  }
-
-  .intern-principles {
-    padding: 19px;
-  }
-
-  .intern-principles li {
-    grid-template-columns: 1fr;
-    gap: 3px;
   }
 }
 

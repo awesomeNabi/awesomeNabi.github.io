@@ -124,10 +124,10 @@ const setupBinaryPortrait = () => {
   const seedLabel = document.querySelector("[data-binary-seed]");
   const context = canvas?.getContext("2d");
   const lensContext = lensCanvas?.getContext("2d");
-  const robotCanvas = document.createElement("canvas");
-  const robotContext = robotCanvas.getContext("2d");
+  const solidCanvas = document.createElement("canvas");
+  const solidContext = solidCanvas.getContext("2d", { willReadFrequently: true });
 
-  if (!figure || !canvas || !lensCanvas || !image || !context || !lensContext || !robotContext) return;
+  if (!figure || !canvas || !lensCanvas || !image || !context || !lensContext || !solidContext) return;
 
   let animationFrame = 0;
   let resizeTimer = 0;
@@ -147,119 +147,12 @@ const setupBinaryPortrait = () => {
     return (Date.now() ^ Math.floor(performance.now() * 1000)) >>> 0;
   };
 
-  const renderRobotLayer = (size, pixelRatio) => {
-    robotCanvas.width = Math.round(size * pixelRatio);
-    robotCanvas.height = Math.round(size * pixelRatio);
-    robotContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    robotContext.clearRect(0, 0, size, size);
-
-    const gridSize = 72;
-    const unit = size / gridSize;
-    const pixelSize = Math.max(2, unit * 0.82);
-    const outline = ["#7de7ff", "#58c8eb", "#a6f1ff"];
-    const armor = ["#246889", "#2f7fa0", "#3e93b2", "#5aabc5"];
-    const shadow = ["#102d43", "#153a53", "#1d4862"];
-    const accent = ["#ffc23f", "#ffe27a", "#baf267"];
-
-    const paintPixel = (column, row, color, alpha = 1) => {
-      robotContext.globalAlpha = alpha;
-      robotContext.fillStyle = color;
-      robotContext.fillRect(
-        Math.round(column * unit),
-        Math.round(row * unit),
-        Math.ceil(pixelSize),
-        Math.ceil(pixelSize),
-      );
-    };
-
-    const fillPixels = (column, row, width, height, palette) => {
-      for (let y = row; y < row + height; y += 1) {
-        for (let x = column; x < column + width; x += 1) {
-          paintPixel(x, y, palette[(x * 3 + y * 5) % palette.length]);
-        }
-      }
-    };
-
-    // Legs and feet sit beneath the human silhouette's lower body.
-    fillPixels(24, 60, 10, 10, shadow);
-    fillPixels(39, 60, 10, 10, shadow);
-    fillPixels(21, 68, 14, 3, outline);
-    fillPixels(38, 68, 14, 3, outline);
-
-    // Arms and shoulder joints.
-    fillPixels(10, 42, 8, 19, armor);
-    fillPixels(55, 42, 8, 19, armor);
-    fillPixels(8, 45, 4, 10, outline);
-    fillPixels(63, 45, 4, 10, outline);
-    fillPixels(11, 39, 12, 7, outline);
-    fillPixels(50, 39, 12, 7, outline);
-    fillPixels(10, 58, 9, 4, accent);
-    fillPixels(54, 58, 9, 4, accent);
-
-    // Tapered torso with a brighter pixel outline.
-    for (let row = 39; row < 65; row += 1) {
-      const taper = row > 58 ? 4 : row > 48 ? 2 : 0;
-      const left = 16 + taper;
-      const right = 56 - taper;
-      for (let column = left; column < right; column += 1) {
-        const edge = column === left || column === right - 1 || row === 39 || row === 64;
-        const palette = edge ? outline : armor;
-        paintPixel(column, row, palette[(column + row * 2) % palette.length]);
-      }
-    }
-
-    fillPixels(26, 45, 21, 14, shadow);
-    fillPixels(28, 47, 17, 10, ["#0c2235", "#12344b"]);
-    fillPixels(34, 48, 5, 5, accent);
-    paintPixel(36, 50, "#ffffff");
-    fillPixels(22, 61, 29, 3, outline);
-
-    // Neck and side connectors.
-    fillPixels(30, 34, 13, 7, armor);
-    fillPixels(32, 35, 9, 5, outline);
-    fillPixels(15, 18, 4, 11, outline);
-    fillPixels(54, 18, 4, 11, outline);
-    fillPixels(13, 21, 3, 5, accent);
-    fillPixels(58, 21, 3, 5, accent);
-
-    // Pixelated robot head with chamfered corners.
-    for (let row = 8; row < 35; row += 1) {
-      const corner = row < 11 || row > 31 ? 5 : row < 14 || row > 29 ? 2 : 0;
-      const left = 17 + corner;
-      const right = 56 - corner;
-      for (let column = left; column < right; column += 1) {
-        const edge = column === left || column === right - 1 || row === 8 || row === 34;
-        const palette = edge ? outline : armor;
-        paintPixel(column, row, palette[(column * 2 + row) % palette.length]);
-      }
-    }
-
-    fillPixels(21, 14, 31, 17, shadow);
-    fillPixels(23, 16, 27, 13, ["#0a1e30", "#0d293d"]);
-
-    // Eyes, pupils, mouth, and small diagnostic pixels.
-    fillPixels(26, 19, 7, 6, ["#8feaff", "#c6f7ff"]);
-    fillPixels(40, 19, 7, 6, ["#8feaff", "#c6f7ff"]);
-    fillPixels(28, 21, 3, 3, accent);
-    fillPixels(42, 21, 3, 3, accent);
-    fillPixels(31, 27, 12, 2, outline);
-    paintPixel(29, 26, "#58c8eb");
-    paintPixel(44, 26, "#58c8eb");
-    paintPixel(24, 12, "#ffc23f");
-    paintPixel(49, 12, "#baf267");
-
-    // Antenna and signal cap.
-    fillPixels(35, 3, 3, 6, outline);
-    fillPixels(33, 1, 7, 3, accent);
-    paintPixel(36, 0, "#ffffff");
-
-    // Sparse circuit highlights keep the robot visibly pixel-built.
-    for (let row = 42; row < 62; row += 4) {
-      paintPixel(21 + ((row * 3) % 8), row, "#8feaff", 0.9);
-      paintPixel(48 - ((row * 5) % 7), row + 1, "#ffc23f", 0.9);
-    }
-
-    robotContext.globalAlpha = 1;
+  const renderSolidLayer = (size, pixelRatio, drawX, drawY, drawWidth, drawHeight) => {
+    solidCanvas.width = Math.round(size * pixelRatio);
+    solidCanvas.height = Math.round(size * pixelRatio);
+    solidContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    solidContext.clearRect(0, 0, size, size);
+    solidContext.drawImage(image, drawX, drawY, drawWidth, drawHeight);
   };
 
   const clearLens = () => {
@@ -279,6 +172,8 @@ const setupBinaryPortrait = () => {
     const radius = Math.max(50, Math.min(86, portraitSize * 0.115));
     const x = Math.max(radius, Math.min(portraitSize - radius, lensPoint.x));
     const y = Math.max(radius, Math.min(portraitSize - radius, lensPoint.y));
+    const zoom = 1.42;
+    const sourceRadius = radius / zoom;
 
     clearLens();
     lensContext.setTransform(portraitPixelRatio, 0, 0, portraitPixelRatio, 0, 0);
@@ -286,37 +181,20 @@ const setupBinaryPortrait = () => {
     lensContext.beginPath();
     lensContext.arc(x, y, radius, 0, Math.PI * 2);
     lensContext.clip();
-    lensContext.fillStyle = "#0b1d2e";
+    lensContext.fillStyle = "rgba(255, 255, 255, 0.96)";
     lensContext.fillRect(x - radius, y - radius, radius * 2, radius * 2);
-
-    const gridStep = Math.max(10, radius / 5.5);
-    lensContext.beginPath();
-    for (let gridX = x - radius; gridX <= x + radius; gridX += gridStep) {
-      lensContext.moveTo(gridX, y - radius);
-      lensContext.lineTo(gridX, y + radius);
-    }
-    for (let gridY = y - radius; gridY <= y + radius; gridY += gridStep) {
-      lensContext.moveTo(x - radius, gridY);
-      lensContext.lineTo(x + radius, gridY);
-    }
-    lensContext.lineWidth = 0.65;
-    lensContext.strokeStyle = "rgba(116, 220, 247, 0.13)";
-    lensContext.stroke();
-
-    const robotUnit = portraitSize / 72;
-    const parallaxX = ((lensPoint.x / portraitSize) - 0.5) * radius * 0.1;
-    const parallaxY = ((lensPoint.y / portraitSize) - 0.5) * radius * 0.08;
-    lensContext.imageSmoothingEnabled = false;
+    lensContext.imageSmoothingEnabled = true;
+    lensContext.imageSmoothingQuality = "high";
     lensContext.drawImage(
-      robotCanvas,
-      8 * robotUnit * portraitPixelRatio,
-      0,
-      56 * robotUnit * portraitPixelRatio,
-      66 * robotUnit * portraitPixelRatio,
-      x - radius * 0.72 + parallaxX,
-      y - radius * 0.83 + parallaxY,
-      radius * 1.44,
-      radius * 1.68,
+      solidCanvas,
+      (x - sourceRadius) * portraitPixelRatio,
+      (y - sourceRadius) * portraitPixelRatio,
+      sourceRadius * 2 * portraitPixelRatio,
+      sourceRadius * 2 * portraitPixelRatio,
+      x - radius,
+      y - radius,
+      radius * 2,
+      radius * 2,
     );
 
     const glass = lensContext.createRadialGradient(
@@ -327,9 +205,9 @@ const setupBinaryPortrait = () => {
       y,
       radius,
     );
-    glass.addColorStop(0, "rgba(255, 255, 255, 0.2)");
+    glass.addColorStop(0, "rgba(255, 255, 255, 0.3)");
     glass.addColorStop(0.58, "rgba(255, 255, 255, 0)");
-    glass.addColorStop(1, "rgba(74, 210, 239, 0.12)");
+    glass.addColorStop(1, "rgba(31, 91, 132, 0.08)");
     lensContext.fillStyle = glass;
     lensContext.fillRect(x - radius, y - radius, radius * 2, radius * 2);
     lensContext.restore();
@@ -342,7 +220,7 @@ const setupBinaryPortrait = () => {
     lensContext.beginPath();
     lensContext.arc(x, y, radius - 4.5, 0, Math.PI * 2);
     lensContext.lineWidth = 1.35;
-    lensContext.strokeStyle = "rgba(86, 210, 238, 0.86)";
+    lensContext.strokeStyle = "rgba(28, 72, 106, 0.72)";
     lensContext.stroke();
     lensContext.beginPath();
     lensContext.arc(x, y, radius - 7, -2.7, -1.25);
@@ -358,6 +236,14 @@ const setupBinaryPortrait = () => {
     const x = ((event.clientX - bounds.left) / bounds.width) * portraitSize;
     const y = ((event.clientY - bounds.top) / bounds.height) * portraitSize;
     if (x < 0 || x > portraitSize || y < 0 || y > portraitSize) {
+      hideLens();
+      return;
+    }
+
+    const maskX = Math.min(solidCanvas.width - 1, Math.max(0, Math.floor(x * portraitPixelRatio)));
+    const maskY = Math.min(solidCanvas.height - 1, Math.max(0, Math.floor(y * portraitPixelRatio)));
+    const alpha = solidContext.getImageData(maskX, maskY, 1, 1).data[3];
+    if (alpha < 24) {
       hideLens();
       return;
     }
@@ -391,7 +277,6 @@ const setupBinaryPortrait = () => {
     lensCanvas.height = canvas.height;
     portraitSize = size;
     portraitPixelRatio = pixelRatio;
-    renderRobotLayer(size, pixelRatio);
     clearLens();
 
     const targetCanvas = document.createElement("canvas");
@@ -405,6 +290,7 @@ const setupBinaryPortrait = () => {
     const drawHeight = image.naturalHeight * sourceScale;
     const drawX = (size - drawWidth) / 2;
     const drawY = (size - drawHeight) / 2;
+    renderSolidLayer(size, pixelRatio, drawX, drawY, drawWidth, drawHeight);
     targetContext.clearRect(0, 0, size, size);
     targetContext.drawImage(image, drawX, drawY, drawWidth, drawHeight);
 

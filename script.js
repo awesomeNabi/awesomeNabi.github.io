@@ -13,8 +13,6 @@ const smoothStep = (edge0, edge1, value) => {
   return unit * unit * (3 - 2 * unit);
 };
 
-let coverProgressValue = 0;
-
 const setupCoverTransition = () => {
   const cover = document.querySelector("[data-cover]");
   const siteContent = document.querySelector("[data-site-content]");
@@ -28,11 +26,14 @@ const setupCoverTransition = () => {
   let scrollDirection = 1;
   let previousScrollY = window.scrollY;
 
-  const getEntryScrollTop = () =>
-    cover.offsetTop + Math.max(0, cover.offsetHeight - window.innerHeight);
+  const scene = cover.querySelector("[data-cover-scene]");
+  const getScrollSpan = () => motionPreference.matches
+    ? cover.offsetHeight
+    : Math.max(1, cover.offsetHeight - scene.offsetHeight);
+  const getEntryScrollTop = () => cover.offsetTop + getScrollSpan();
 
   const getCoverProgress = () => {
-    const scrollSpan = Math.max(1, cover.offsetHeight - window.innerHeight);
+    const scrollSpan = getScrollSpan();
     return clampUnit((window.scrollY - cover.offsetTop) / scrollSpan);
   };
 
@@ -42,7 +43,6 @@ const setupCoverTransition = () => {
     const cueExit = smoothStep(0.1, 0.42, progress);
     const siteReveal = smoothStep(0.08, 0.72, progress);
 
-    coverProgressValue = progress;
     document.documentElement.style.setProperty("--cover-progress", progress.toFixed(4));
     document.documentElement.style.setProperty("--cover-scene-shift", `${(-7 * coverExit).toFixed(3)}svh`);
     document.documentElement.style.setProperty("--cover-scale", (1 - 0.045 * coverExit).toFixed(4));
@@ -56,7 +56,6 @@ const setupCoverTransition = () => {
     cover.classList.toggle("is-transitioned", transitioned);
     cover.classList.toggle("is-cue-hidden", progress > 0.42);
     siteContent.classList.toggle("is-transitioned", transitioned);
-    window.dispatchEvent(new CustomEvent("coverprogresschange", { detail: { progress } }));
     framePending = false;
   };
 
@@ -113,634 +112,197 @@ const setupCoverTransition = () => {
   window.addEventListener("scroll", handleCoverScroll, { passive: true });
   window.addEventListener("resize", requestCoverUpdate, { passive: true });
   window.addEventListener("pageshow", requestCoverUpdate);
+  motionPreference.addEventListener?.("change", requestCoverUpdate);
   updateCover();
 };
 
-const setupBinaryPortrait = () => {
-  const figure = document.querySelector("[data-binary-portrait]");
-  const canvas = document.querySelector("[data-binary-canvas]");
-  const lensCanvas = document.querySelector("[data-binary-lens]");
-  const image = document.querySelector("#binary-portrait-source");
-  const seedLabel = document.querySelector("[data-binary-seed]");
-  const context = canvas?.getContext("2d");
-  const lensContext = lensCanvas?.getContext("2d");
-  const solidCanvas = document.createElement("canvas");
-  const solidContext = solidCanvas.getContext("2d", { willReadFrequently: true });
-
-  if (!figure || !canvas || !lensCanvas || !image || !context || !lensContext || !solidContext) return;
-
-  let animationFrame = 0;
-  let resizeTimer = 0;
-  let hasAnimated = false;
-  let portraitSize = 0;
-  let portraitPixelRatio = 1;
-  let lensPoint = { x: 0, y: 0 };
-  let lensActive = false;
-  let touchLensTimer = 0;
-
-  const createSeed = () => {
-    if (window.crypto?.getRandomValues) {
-      const seedBuffer = new Uint32Array(1);
-      window.crypto.getRandomValues(seedBuffer);
-      return seedBuffer[0] || 1;
-    }
-    return (Date.now() ^ Math.floor(performance.now() * 1000)) >>> 0;
-  };
-
-  const renderSolidLayer = (size, pixelRatio, drawX, drawY, drawWidth, drawHeight) => {
-    solidCanvas.width = Math.round(size * pixelRatio);
-    solidCanvas.height = Math.round(size * pixelRatio);
-    solidContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    solidContext.clearRect(0, 0, size, size);
-    solidContext.drawImage(image, drawX, drawY, drawWidth, drawHeight);
-  };
-
-  const clearLens = () => {
-    lensContext.setTransform(1, 0, 0, 1, 0, 0);
-    lensContext.clearRect(0, 0, lensCanvas.width, lensCanvas.height);
-  };
-
-  const hideLens = () => {
-    lensActive = false;
-    figure.classList.remove("is-lens-active");
-    clearLens();
-  };
-
-  const drawLens = () => {
-    if (!lensActive || !portraitSize || motionPreference.matches) return;
-
-    const radius = Math.max(50, Math.min(86, portraitSize * 0.115));
-    const x = Math.max(radius, Math.min(portraitSize - radius, lensPoint.x));
-    const y = Math.max(radius, Math.min(portraitSize - radius, lensPoint.y));
-    const zoom = 1.42;
-    const sourceRadius = radius / zoom;
-
-    clearLens();
-    lensContext.setTransform(portraitPixelRatio, 0, 0, portraitPixelRatio, 0, 0);
-    lensContext.save();
-    lensContext.beginPath();
-    lensContext.arc(x, y, radius, 0, Math.PI * 2);
-    lensContext.clip();
-    lensContext.fillStyle = "rgba(255, 255, 255, 0.96)";
-    lensContext.fillRect(x - radius, y - radius, radius * 2, radius * 2);
-    lensContext.imageSmoothingEnabled = true;
-    lensContext.imageSmoothingQuality = "high";
-    lensContext.drawImage(
-      solidCanvas,
-      (x - sourceRadius) * portraitPixelRatio,
-      (y - sourceRadius) * portraitPixelRatio,
-      sourceRadius * 2 * portraitPixelRatio,
-      sourceRadius * 2 * portraitPixelRatio,
-      x - radius,
-      y - radius,
-      radius * 2,
-      radius * 2,
-    );
-
-    const glass = lensContext.createRadialGradient(
-      x - radius * 0.34,
-      y - radius * 0.38,
-      0,
-      x,
-      y,
-      radius,
-    );
-    glass.addColorStop(0, "rgba(255, 255, 255, 0.3)");
-    glass.addColorStop(0.58, "rgba(255, 255, 255, 0)");
-    glass.addColorStop(1, "rgba(31, 91, 132, 0.08)");
-    lensContext.fillStyle = glass;
-    lensContext.fillRect(x - radius, y - radius, radius * 2, radius * 2);
-    lensContext.restore();
-
-    lensContext.beginPath();
-    lensContext.arc(x, y, radius - 1.5, 0, Math.PI * 2);
-    lensContext.lineWidth = 3;
-    lensContext.strokeStyle = "rgba(255, 255, 255, 0.96)";
-    lensContext.stroke();
-    lensContext.beginPath();
-    lensContext.arc(x, y, radius - 4.5, 0, Math.PI * 2);
-    lensContext.lineWidth = 1.35;
-    lensContext.strokeStyle = "rgba(28, 72, 106, 0.72)";
-    lensContext.stroke();
-    lensContext.beginPath();
-    lensContext.arc(x, y, radius - 7, -2.7, -1.25);
-    lensContext.lineWidth = 3;
-    lensContext.strokeStyle = "rgba(255, 194, 63, 0.92)";
-    lensContext.stroke();
-  };
-
-  const updateLens = (event) => {
-    const bounds = canvas.getBoundingClientRect();
-    if (!bounds.width || !bounds.height) return;
-
-    const x = ((event.clientX - bounds.left) / bounds.width) * portraitSize;
-    const y = ((event.clientY - bounds.top) / bounds.height) * portraitSize;
-    if (x < 0 || x > portraitSize || y < 0 || y > portraitSize) {
-      hideLens();
-      return;
-    }
-
-    const maskX = Math.min(solidCanvas.width - 1, Math.max(0, Math.floor(x * portraitPixelRatio)));
-    const maskY = Math.min(solidCanvas.height - 1, Math.max(0, Math.floor(y * portraitPixelRatio)));
-    const alpha = solidContext.getImageData(maskX, maskY, 1, 1).data[3];
-    if (alpha < 24) {
-      hideLens();
-      return;
-    }
-
-    lensPoint = { x, y };
-    lensActive = true;
-    figure.classList.add("is-lens-active");
-    drawLens();
-  };
-
-  const renderPortrait = (animate = true) => {
-    window.cancelAnimationFrame(animationFrame);
-
-    const bounds = canvas.getBoundingClientRect();
-    const size = Math.max(280, Math.min(900, Math.round(bounds.width || 680)));
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.65);
-    const seed = createSeed();
-    let randomState = seed;
-
-    const random = () => {
-      randomState = (randomState * 1664525 + 1013904223) >>> 0;
-      return randomState / 4294967296;
-    };
-
-    if (seedLabel) seedLabel.textContent = seed.toString(16).toUpperCase().padStart(8, "0");
-
-    canvas.width = Math.round(size * pixelRatio);
-    canvas.height = Math.round(size * pixelRatio);
-    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    lensCanvas.width = canvas.width;
-    lensCanvas.height = canvas.height;
-    portraitSize = size;
-    portraitPixelRatio = pixelRatio;
-    clearLens();
-
-    const targetCanvas = document.createElement("canvas");
-    targetCanvas.width = size;
-    targetCanvas.height = size;
-    const targetContext = targetCanvas.getContext("2d", { willReadFrequently: true });
-    if (!targetContext) return;
-
-    const sourceScale = Math.min(size / image.naturalWidth, size / image.naturalHeight) * 0.91;
-    const drawWidth = image.naturalWidth * sourceScale;
-    const drawHeight = image.naturalHeight * sourceScale;
-    const drawX = (size - drawWidth) / 2;
-    const drawY = (size - drawHeight) / 2;
-    renderSolidLayer(size, pixelRatio, drawX, drawY, drawWidth, drawHeight);
-    targetContext.clearRect(0, 0, size, size);
-    targetContext.drawImage(image, drawX, drawY, drawWidth, drawHeight);
-
-    const pixels = targetContext.getImageData(0, 0, size, size).data;
-    const cellSize = Math.max(4.8, Math.min(7.4, size / 118));
-    const fontSize = cellSize * 1.28;
-    const featurePalette = ["#244f70", "#326686", "#467b9a", "#5f91ad", "#789fb5"];
-    const cells = [];
-
-    for (let y = cellSize / 2; y < size; y += cellSize) {
-      for (let x = cellSize / 2; x < size; x += cellSize) {
-        const pixelX = Math.min(size - 1, Math.floor(x));
-        const pixelY = Math.min(size - 1, Math.floor(y));
-        const index = (pixelY * size + pixelX) * 4;
-        const red = pixels[index];
-        const green = pixels[index + 1];
-        const blue = pixels[index + 2];
-        const alpha = pixels[index + 3];
-        if (alpha < 28) continue;
-
-        const luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-        const facialFeature = luminance < 88 && blue > red * 1.18 && blue > green * 1.06;
-        const coverage = facialFeature
-          ? Math.min(1, alpha / 232)
-          : Math.min(1, alpha / 255) * (0.96 + ((255 - luminance) / 255) * 0.04);
-        if (random() > coverage) continue;
-
-        const digit = random() > 0.5 ? "1" : "0";
-        cells.push({
-          x,
-          y,
-          color: facialFeature
-            ? featurePalette[Math.floor(random() * featurePalette.length)]
-            : `rgb(${red}, ${green}, ${blue})`,
-          digit,
-          alternate: digit === "1" ? "0" : "1",
-          delay: Math.pow(random(), 1.22) * 0.72,
-          jitterX: (random() - 0.5) * size * 0.44,
-          jitterY: (random() - 0.5) * size * 0.38,
-          phase: Math.floor(random() * 11),
-        });
-      }
-    }
-
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.font = `760 ${fontSize}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
-
-    const startTime = performance.now();
-    const duration = motionPreference.matches || !animate ? 1 : 2050;
-
-    const drawFrame = (now) => {
-      const progress = duration === 1 ? 1 : clampUnit((now - startTime) / duration);
-      context.clearRect(0, 0, size, size);
-
-      cells.forEach((cell) => {
-        const localProgress = clampUnit((progress - cell.delay) / Math.max(0.12, 1 - cell.delay));
-        if (localProgress <= 0) return;
-
-        const eased = 1 - Math.pow(1 - localProgress, 3);
-        const flicker = (Math.floor(now / 72) + cell.phase) % 3;
-        const digit = localProgress < 0.84 && flicker !== 0 ? cell.alternate : cell.digit;
-        const x = cell.x + cell.jitterX * (1 - eased);
-        const y = cell.y + cell.jitterY * (1 - eased);
-
-        context.globalAlpha = Math.min(1, 0.12 + localProgress * 1.18);
-        context.fillStyle = cell.color;
-        context.fillText(digit, x, y);
-      });
-
-      context.globalAlpha = 1;
-      figure.classList.add("is-canvas-ready");
-      if (lensActive) drawLens();
-
-      if (progress < 1) animationFrame = window.requestAnimationFrame(drawFrame);
-    };
-
-    animationFrame = window.requestAnimationFrame(drawFrame);
-  };
-
-  const startPortrait = () => {
-    renderPortrait(!hasAnimated);
-    hasAnimated = true;
-  };
-
-  if (image.complete && image.naturalWidth) startPortrait();
-  else image.addEventListener("load", startPortrait, { once: true });
-
-  image.addEventListener(
-    "error",
-    () => {
-      if (seedLabel) seedLabel.textContent = "FALLBACK";
-    },
-    { once: true },
-  );
-
-  figure.addEventListener(
-    "pointermove",
-    (event) => {
-      if (event.pointerType === "touch") return;
-      updateLens(event);
-    },
-    { passive: true },
-  );
-  figure.addEventListener("pointerleave", hideLens);
-  figure.addEventListener(
-    "pointerdown",
-    (event) => {
-      if (event.pointerType !== "touch") return;
-      window.clearTimeout(touchLensTimer);
-      updateLens(event);
-      touchLensTimer = window.setTimeout(hideLens, 850);
-    },
-    { passive: true },
-  );
-  window.addEventListener("coverprogresschange", (event) => {
-    if (event.detail?.progress > 0.08) hideLens();
-  });
-  motionPreference.addEventListener?.("change", () => {
-    if (motionPreference.matches) hideLens();
-  });
-
-  window.addEventListener(
-    "resize",
-    () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => renderPortrait(false), 160);
-    },
-    { passive: true },
-  );
-};
-
-const setupFluidCover = () => {
-  const cover = document.querySelector("[data-cover]");
-  const scene = document.querySelector("[data-cover-scene]");
-  const canvas = document.querySelector("[data-fluid-canvas]");
-  const displacement = document.querySelector("#cover-displacement");
-
-  if (!cover || !scene || !canvas) return;
-
-  let pointerTarget = { x: 0.52, y: 0.5 };
-  let pointerCurrent = { ...pointerTarget };
-  let pointerVelocity = { x: 0, y: 0 };
-  let energy = 0.2;
-  let isVisible = true;
-  let animationFrame = 0;
-  let running = false;
-
-  const updatePointer = (event) => {
-    const bounds = scene.getBoundingClientRect();
-    if (!bounds.width || !bounds.height) return;
-
-    const nextX = clampUnit((event.clientX - bounds.left) / bounds.width);
-    const nextY = clampUnit((event.clientY - bounds.top) / bounds.height);
-    pointerVelocity.x += nextX - pointerTarget.x;
-    pointerVelocity.y += nextY - pointerTarget.y;
-    pointerTarget = { x: nextX, y: nextY };
-    energy = Math.min(1, energy + Math.hypot(pointerVelocity.x, pointerVelocity.y) * 4 + 0.12);
-  };
-
-  cover.addEventListener("pointermove", updatePointer, { passive: true });
-  cover.addEventListener(
-    "pointerdown",
-    (event) => {
-      updatePointer(event);
-      energy = 1;
-    },
-    { passive: true },
-  );
-  cover.addEventListener("pointerleave", () => {
-    pointerTarget = { x: 0.52, y: 0.5 };
-  });
-
-  const setPortraitDistortion = () => {
-    const speed = Math.hypot(pointerVelocity.x, pointerVelocity.y);
-    const distortion = motionPreference.matches
-      ? 0
-      : Math.min(19, 1.2 + energy * 8.5 + speed * 44) * (1 - coverProgressValue * 0.75);
-
-    displacement?.setAttribute("scale", distortion.toFixed(2));
-    document.documentElement.style.setProperty("--portrait-shift-x", `${((pointerCurrent.x - 0.5) * 13).toFixed(2)}px`);
-    document.documentElement.style.setProperty("--portrait-shift-y", `${((pointerCurrent.y - 0.5) * 9).toFixed(2)}px`);
-  };
-
-  const createShader = (gl, type, source) => {
-    const shader = gl.createShader(type);
-    if (!shader) return null;
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      console.warn("Cover fluid shader could not be compiled.", gl.getShaderInfoLog(shader));
-      gl.deleteShader(shader);
-      return null;
-    }
-    return shader;
-  };
-
-  const gl = canvas.getContext("webgl", {
-    alpha: true,
-    antialias: false,
-    depth: false,
-    stencil: false,
-    powerPreference: "low-power",
-  });
-
-  if (!gl) {
-    const context = canvas.getContext("2d");
-    if (!context) return;
-
-    const resizeFallback = () => {
-      const bounds = canvas.getBoundingClientRect();
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.max(1, Math.round(bounds.width * ratio));
-      canvas.height = Math.max(1, Math.round(bounds.height * ratio));
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    };
-
-    const drawFallback = (now) => {
-      if (!running || motionPreference.matches) return;
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-      pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * 0.075;
-      pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * 0.075;
-      pointerVelocity.x *= 0.88;
-      pointerVelocity.y *= 0.88;
-      energy += (0.18 - energy) * 0.035;
-      context.clearRect(0, 0, width, height);
-
-      const x = pointerCurrent.x * width;
-      const y = pointerCurrent.y * height;
-      const radius = Math.max(width, height) * (0.22 + energy * 0.08);
-      const gradient = context.createRadialGradient(x, y, 0, x, y, radius);
-      gradient.addColorStop(0, `rgba(53, 154, 235, ${0.2 + energy * 0.16})`);
-      gradient.addColorStop(0.48, `rgba(255, 180, 36, ${0.08 + energy * 0.1})`);
-      gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-      context.fillStyle = gradient;
-      context.fillRect(0, 0, width, height);
-      setPortraitDistortion();
-      animationFrame = window.requestAnimationFrame(drawFallback);
-    };
-
-    const startFallback = () => {
-      if (running || !isVisible || motionPreference.matches || coverProgressValue > 0.995) return;
-      running = true;
-      animationFrame = window.requestAnimationFrame(drawFallback);
-    };
-
-    const stopFallback = () => {
-      running = false;
-      window.cancelAnimationFrame(animationFrame);
-    };
-
-    resizeFallback();
-    window.addEventListener("resize", resizeFallback, { passive: true });
-    window.addEventListener(
-      "coverprogresschange",
-      () => {
-        if (coverProgressValue > 0.995) stopFallback();
-        else startFallback();
-      },
-    );
-    startFallback();
-    motionPreference.addEventListener?.("change", () => {
-      if (motionPreference.matches) stopFallback();
-      else startFallback();
-    });
-    return;
-  }
-
-  const vertexShaderSource = `
-    attribute vec2 a_position;
-    varying vec2 v_uv;
-    void main() {
-      v_uv = a_position * 0.5 + 0.5;
-      gl_Position = vec4(a_position, 0.0, 1.0);
-    }
-  `;
-
-  const fragmentShaderSource = `
-    precision mediump float;
-    varying vec2 v_uv;
-    uniform vec2 u_resolution;
-    uniform vec2 u_pointer;
-    uniform vec2 u_velocity;
-    uniform float u_time;
-    uniform float u_energy;
-    uniform float u_scroll;
-
-    float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-    }
-
-    float noise(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
-      f = f * f * (3.0 - 2.0 * f);
-      return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
-                 mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
-    }
-
-    float fbm(vec2 p) {
-      float value = 0.0;
-      float amplitude = 0.52;
-      for (int i = 0; i < 4; i++) {
-        value += amplitude * noise(p);
-        p = p * 2.03 + vec2(1.7, 4.9);
-        amplitude *= 0.5;
-      }
-      return value;
-    }
-
-    void main() {
-      vec2 uv = v_uv;
-      vec2 aspect = vec2(u_resolution.x / max(u_resolution.y, 1.0), 1.0);
-      vec2 delta = (uv - u_pointer) * aspect;
-      float radius = length(delta) + 0.0001;
-      vec2 normal = delta / radius;
-      vec2 tangent = vec2(-normal.y, normal.x);
-      float local = exp(-radius * 5.2) * (0.25 + u_energy * 0.9);
-      float ripple = sin(radius * 31.0 - u_time * 3.8) * 0.5 + 0.5;
-      float velocity = min(length(u_velocity) * 7.0, 1.0);
-      vec2 warped = uv + tangent * local * (0.03 + velocity * 0.065)
-        + normal * ripple * local * 0.018;
-      float field = fbm(warped * 3.15 + vec2(u_time * 0.025, -u_time * 0.018));
-      float secondField = fbm(warped * 4.9 + vec2(-u_time * 0.015, u_time * 0.022));
-      vec3 cool = vec3(0.12, 0.53, 0.89);
-      vec3 warm = vec3(1.0, 0.66, 0.12);
-      vec3 green = vec3(0.31, 0.68, 0.19);
-      vec3 color = mix(cool, warm, smoothstep(0.25, 0.82, field));
-      color = mix(color, green, smoothstep(0.68, 0.94, secondField) * 0.5);
-      float alpha = (0.055 + smoothstep(0.43, 0.88, field) * 0.16 + local * (0.22 + ripple * 0.19));
-      alpha *= 1.0 - u_scroll * 0.72;
-      gl_FragColor = vec4(color, alpha);
-    }
-  `;
-
-  const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-  const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-  if (!vertexShader || !fragmentShader) {
-    canvas.hidden = true;
-    return;
-  }
-
-  const program = gl.createProgram();
-  if (!program) return;
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.warn("Cover fluid program could not be linked.", gl.getProgramInfoLog(program));
-    canvas.hidden = true;
-    return;
-  }
-
-  const positionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-    gl.STATIC_DRAW,
-  );
-
-  const positionLocation = gl.getAttribLocation(program, "a_position");
-  const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
-  const pointerLocation = gl.getUniformLocation(program, "u_pointer");
-  const velocityLocation = gl.getUniformLocation(program, "u_velocity");
-  const timeLocation = gl.getUniformLocation(program, "u_time");
-  const energyLocation = gl.getUniformLocation(program, "u_energy");
-  const scrollLocation = gl.getUniformLocation(program, "u_scroll");
-
-  const resizeFluid = () => {
-    const bounds = canvas.getBoundingClientRect();
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = Math.max(1, Math.round(bounds.width * pixelRatio));
-    canvas.height = Math.max(1, Math.round(bounds.height * pixelRatio));
-    gl.viewport(0, 0, canvas.width, canvas.height);
-  };
-
-  const drawFluid = (now) => {
-    if (!running || motionPreference.matches) return;
-
-    pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * 0.075;
-    pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * 0.075;
-    pointerVelocity.x *= 0.88;
-    pointerVelocity.y *= 0.88;
-    energy += (0.2 - energy) * 0.032;
-
-    gl.useProgram(program);
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.enableVertexAttribArray(positionLocation);
-    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-    gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-    gl.uniform2f(pointerLocation, pointerCurrent.x, 1 - pointerCurrent.y);
-    gl.uniform2f(velocityLocation, pointerVelocity.x, -pointerVelocity.y);
-    gl.uniform1f(timeLocation, now * 0.001);
-    gl.uniform1f(energyLocation, energy);
-    gl.uniform1f(scrollLocation, coverProgressValue);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    setPortraitDistortion();
-
-    animationFrame = window.requestAnimationFrame(drawFluid);
-  };
-
-  const startFluid = () => {
-    if (running || !isVisible || motionPreference.matches || coverProgressValue > 0.995) return;
-    running = true;
-    canvas.hidden = false;
-    animationFrame = window.requestAnimationFrame(drawFluid);
-  };
-
-  const stopFluid = () => {
-    running = false;
-    window.cancelAnimationFrame(animationFrame);
-  };
-
-  if ("IntersectionObserver" in window) {
-    const visibilityObserver = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-        if (isVisible) startFluid();
-        else stopFluid();
-      },
-      { threshold: 0.01 },
-    );
-    visibilityObserver.observe(cover);
-  }
-
-  resizeFluid();
-  window.addEventListener("resize", resizeFluid, { passive: true });
-  window.addEventListener(
-    "coverprogresschange",
-    () => {
-      if (coverProgressValue > 0.995) stopFluid();
-      else startFluid();
-    },
-  );
-  motionPreference.addEventListener?.("change", () => {
-    if (motionPreference.matches) {
-      stopFluid();
-      canvas.hidden = true;
-      displacement?.setAttribute("scale", "0");
-    } else {
-      startFluid();
-    }
-  });
-  startFluid();
-};
-
 setupCoverTransition();
-setupBinaryPortrait();
+
+const setupRetroConsole = () => {
+  const gameConsole = document.querySelector("[data-game-console]");
+  if (!gameConsole) return;
+
+  const destinations = [
+    { hash: "#about", label: "01 / ABOUT", title: "个人简介" },
+    { hash: "#research", label: "02 / RESEARCH", title: "研究工作" },
+    { hash: "#intern", label: "03 / INTERN", title: "实习交流" },
+    { hash: "#projects", label: "04 / PROJECTS", title: "项目实践" },
+  ];
+  const openLinks = [...gameConsole.querySelectorAll("[data-game-open]")];
+  const label = gameConsole.querySelector("[data-game-label]");
+  const menuButtons = [...gameConsole.querySelectorAll("[data-game-choice]")];
+  const screen = gameConsole.querySelector(".crt-screen");
+  const monitor = gameConsole.querySelector(".crt-monitor");
+  const powerButton = gameConsole.querySelector("[data-crt-power]");
+  const powerStatus = gameConsole.querySelector("[data-crt-status]");
+  const screenUI = screen.querySelector(".ps1-ui");
+  const noiseCanvas = screen.querySelector("[data-crt-noise]");
+  const noiseContext = noiseCanvas.getContext("2d", { alpha: false });
+  const noiseImage = noiseContext?.createImageData(noiseCanvas.width, noiseCanvas.height);
+  const cover = gameConsole.closest("[data-cover]");
+  let standby = false;
+  let noiseFrame = 0;
+  let lastNoiseTime = 0;
+  let screenInView = true;
+  let powerTransitionTimer = 0;
+  let scanFrame = 0;
+  let scanStarted = 0;
+  let lastScanTime = 0;
+  const distortionLayer = document.createElement("div");
+  distortionLayer.className = "crt-screen__distorted";
+  distortionLayer.setAttribute("aria-hidden", "true");
+  distortionLayer.inert = true;
+  screen.append(distortionLayer);
+  const syncDistortion = () => {
+    // A masked copy shifts only the narrow area currently crossed by the beam.
+    const copy = screenUI.cloneNode(true);
+    copy.querySelectorAll("*").forEach((element) => {
+      [...element.attributes].forEach(({ name }) => {
+        if (name.startsWith("data-") || name === "id" || name === "aria-live") element.removeAttribute(name);
+      });
+    });
+    distortionLayer.replaceChildren(copy);
+  };
+
+  const paintNoise = () => {
+    if (!noiseImage) return;
+    const pixels = noiseImage.data;
+    for (let index = 0; index < pixels.length; index += 4) {
+      const gray = 42 + Math.floor(Math.random() * 160);
+      pixels[index] = gray;
+      pixels[index + 1] = gray;
+      pixels[index + 2] = gray;
+      pixels[index + 3] = 255;
+    }
+    noiseContext.putImageData(noiseImage, 0, 0);
+  };
+  const shouldAnimateNoise = () => standby && noiseContext && screenInView
+    && !document.hidden && !motionPreference.matches && !cover.classList.contains("is-transitioned");
+  const stopNoise = () => {
+    window.cancelAnimationFrame(noiseFrame);
+    noiseFrame = 0;
+  };
+  const animateNoise = (time) => {
+    noiseFrame = 0;
+    if (!shouldAnimateNoise()) return;
+    // Updating the texture at 12.5 fps keeps the noise subtle and inexpensive.
+    if (time - lastNoiseTime >= 80) {
+      paintNoise();
+      lastNoiseTime = time;
+    }
+    noiseFrame = window.requestAnimationFrame(animateNoise);
+  };
+  const syncNoisePlayback = () => {
+    if (!shouldAnimateNoise()) stopNoise();
+    else if (!noiseFrame) noiseFrame = window.requestAnimationFrame(animateNoise);
+  };
+
+  const stopScreenEffect = () => {
+    screen.classList.remove("is-screen-active");
+    window.cancelAnimationFrame(scanFrame);
+    scanFrame = 0;
+  };
+  const animateScan = (time) => {
+    scanFrame = 0;
+    if (standby || motionPreference.matches || document.hidden || !screenInView || cover.classList.contains("is-transitioned")) {
+      stopScreenEffect();
+      return;
+    }
+    if (time - lastScanTime >= 32) {
+      const progress = ((time - scanStarted) % 2600) / 2600;
+      screen.style.setProperty("--scan-position", `${(-20 + progress * 140).toFixed(2)}%`);
+      screen.style.setProperty("--scan-drift-x", `${(Math.sin(time * .027) * 1.8).toFixed(2)}px`);
+      screen.style.setProperty("--scan-drift-y", `${(Math.sin(time * .018) * .45).toFixed(2)}px`);
+      lastScanTime = time;
+    }
+    scanFrame = window.requestAnimationFrame(animateScan);
+  };
+  screen.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "touch" || standby || motionPreference.matches) return;
+    stopScreenEffect();
+    screen.classList.add("is-screen-active");
+    screen.style.setProperty("--scan-position", "-20%");
+    scanStarted = performance.now();
+    lastScanTime = 0;
+    scanFrame = window.requestAnimationFrame(animateScan);
+  });
+  screen.addEventListener("pointerleave", stopScreenEffect);
+  screen.addEventListener("pointercancel", stopScreenEffect);
+  motionPreference.addEventListener?.("change", () => {
+    stopScreenEffect();
+    if (standby) paintNoise();
+    syncNoisePlayback();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopScreenEffect();
+    syncNoisePlayback();
+  });
+  window.addEventListener("pagehide", () => { stopNoise(); stopScreenEffect(); });
+  window.addEventListener("pageshow", syncNoisePlayback);
+  window.addEventListener("scroll", () => window.requestAnimationFrame(syncNoisePlayback), { passive: true });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      screenInView = entry.isIntersecting;
+      syncNoisePlayback();
+    }).observe(screen);
+  }
+  powerButton.disabled = !noiseContext;
+  powerButton.addEventListener("click", () => {
+    standby = !standby;
+    stopScreenEffect();
+    screen.classList.toggle("is-standby", standby);
+    monitor.classList.toggle("is-standby", standby);
+    screenUI.inert = standby;
+    powerButton.setAttribute("aria-pressed", String(standby));
+    powerButton.title = standby ? "唤醒屏幕" : "进入待机（雪花屏）";
+    powerStatus.textContent = standby ? "屏幕已待机，按电源键唤醒。" : "屏幕已唤醒。";
+    window.clearTimeout(powerTransitionTimer);
+    if (!motionPreference.matches) {
+      monitor.classList.add("is-power-switching");
+      powerTransitionTimer = window.setTimeout(() => monitor.classList.remove("is-power-switching"), 340);
+    }
+    if (standby) paintNoise();
+    syncNoisePlayback();
+  });
+  let selected = 0;
+  const select = (index) => {
+    if (standby) return;
+    selected = (index + destinations.length) % destinations.length;
+    const destination = destinations[selected];
+    label.textContent = destination.label;
+    menuButtons.forEach((button, index) => {
+      button.classList.toggle("is-selected", index === selected);
+      button.setAttribute("aria-pressed", String(index === selected));
+    });
+    openLinks.forEach((link) => {
+      link.href = destination.hash;
+      link.setAttribute("aria-label", `查看${destination.title}`);
+    });
+    syncDistortion();
+  };
+  menuButtons.forEach((button, index) => button.addEventListener("click", () => select(index)));
+  gameConsole.querySelector("[data-game-reset]").addEventListener("click", () => select(0));
+  gameConsole.addEventListener("keydown", (event) => {
+    if (standby || event.altKey || event.ctrlKey || event.metaKey) return;
+    if (["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"].includes(event.key)) {
+      event.preventDefault();
+      select(selected + (["ArrowLeft", "ArrowUp"].includes(event.key) ? -1 : 1));
+    } else if (["a", "z"].includes(event.key.toLowerCase())) {
+      event.preventDefault();
+      openLinks[0].click();
+    } else if (["b", "x"].includes(event.key.toLowerCase())) {
+      event.preventDefault();
+      select(0);
+    } else if (event.key === "Enter" && event.target === gameConsole) {
+      event.preventDefault();
+      gameConsole.querySelector("[data-scroll-start]").click();
+    }
+  });
+  select(0);
+};
+
+setupRetroConsole();
+
 
 const autoplayVideos = [...document.querySelectorAll("video[autoplay]")];
 

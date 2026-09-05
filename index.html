@@ -623,110 +623,20 @@
 
               <div class="case-footer">
                 <p>查看 Geek Mind 的产品定义、系统能力与真实场景展示。</p>
-                <a
-                  class="button button-primary"
-                  href="https://mp.weixin.qq.com/s/_3Vhwg3F90XdgVEWZ5oUNA"
-                  target="_blank"
-                  rel="noreferrer"
-                >阅读 Geek Mind 项目文章 <span>↗</span></a>
-              </div>
-            </article>
-
-            <article class="case-study case-study-memory">
-              <div class="case-heading">
-                <div>
-                  <p class="case-number">PROJECT / 02 · 2026.02—2026.06</p>
-                  <h3>操作中构建记忆系统</h3>
-                  <p class="case-subtitle">第一视角语义空间记忆构建与 VLN/VLA 增强 · 视觉编码器预训练与表征增强</p>
+                <div class="case-footer-actions">
+                  <a
+                    class="button button-secondary"
+                    href="https://github.com/awesomeNabi/Geek-Mind"
+                    target="_blank"
+                    rel="noreferrer"
+                  >查看 GitHub 项目 <span>↗</span></a>
+                  <a
+                    class="button button-primary"
+                    href="https://mp.weixin.qq.com/s/_3Vhwg3F90XdgVEWZ5oUNA"
+                    target="_blank"
+                    rel="noreferrer"
+                  >阅读 Geek Mind 项目文章 <span>↗</span></a>
                 </div>
-                <span class="case-status case-status-blue"><i></i> AAAI 2027 · UNDER REVIEW</span>
-              </div>
-
-              <div class="case-hero case-hero-landscape">
-                <div class="case-media-column">
-                  <div class="case-media case-media-landscape">
-                    <video
-                      controls
-                      muted
-                      playsinline
-                      preload="metadata"
-                      poster="assets/spatial-memory-poster.webp"
-                      aria-label="操作中构建语义空间记忆的 Franka 真机演示"
-                    >
-                      <source src="assets/spatial-memory-demo.mp4" type="video/mp4" />
-                      当前浏览器不支持嵌入视频。
-                    </video>
-                    <span class="media-caption">第一视角操作 · 语义空间记忆真机演示</span>
-                  </div>
-                  <div class="public-context public-context-blue public-context-inline">
-                    <div class="public-context-label">项目概述</div>
-                    <p>
-                      连续操作中的视觉流不仅要记录“看见了什么”，还要持续组织物体、空间关系、可达性与状态变化。
-                      项目以 <b>object-centric spatial memory</b> 将这些信息维护为可更新、可检索的长期环境上下文。
-                    </p>
-                  </div>
-                </div>
-                <div class="case-summary">
-                  <p class="micro-label">项目介绍</p>
-                  <p class="case-lead">
-                    面向桌面机械臂构建 object-centric spatial memory，把瞬时第一视角观察组织为
-                    可持续更新、可检索的语义空间记忆，为后续 VLN/VLA 策略提供长期环境上下文。
-                  </p>
-                  <p>
-                    项目用冻结 VLM 提供任务条件下的高层语义监督，再结合机器人本体状态建立连续物理约束；
-                    最终语义被压缩进轻量视觉编码器，部署阶段无需再调用 VLM。
-                  </p>
-                  <ul class="tag-list case-tags" aria-label="项目技术栈">
-                    <li>Object-centric Memory</li><li>DROID</li><li>VLM Distillation</li>
-                    <li>State-aware Pretraining</li><li>Franka</li><li>VLN / VLA</li>
-                  </ul>
-                </div>
-              </div>
-
-              <section class="case-section" aria-labelledby="memory-role-title">
-                <div class="case-section-title">
-                  <span>01</span>
-                  <div><p>MY CONTRIBUTION</p><h4 id="memory-role-title">从记忆系统到任务视觉编码器</h4></div>
-                </div>
-                <p class="case-section-lead">
-                  项目构建面向机器人连续观察的语义空间记忆；我负责其中的视觉编码器预训练与表征增强，
-                  让记忆系统获得稳定、任务相关且可在真机高效部署的视觉特征。
-                </p>
-                <div class="memory-bridge">
-                  <article>
-                    <span>01 · SYSTEM NEED</span>
-                    <h5>记忆系统需要什么</h5>
-                    <p>从连续第一视角中识别任务相关物体、关系与状态变化，为 grounding、关系建模和记忆更新提供依据。</p>
-                  </article>
-                  <article class="memory-bridge-highlight">
-                    <span>02 · MY METHOD</span>
-                    <h5>我如何训练编码器</h5>
-                    <p>用冻结 VLM 蒸馏指令条件下的帧间语义关系，并加入末端、关节与夹爪状态约束，学习任务与物理状态一致的表征。</p>
-                  </article>
-                  <article>
-                    <span>03 · SYSTEM VALUE</span>
-                    <h5>为记忆系统提供什么</h5>
-                    <p>输出可部署的 task-centric、state-aware 特征，支撑物体定位、关系更新与检索；部署阶段无需再次调用 VLM。</p>
-                  </article>
-                </div>
-              </section>
-
-              <section class="case-section case-outcome" aria-labelledby="memory-outcome-title">
-                <div class="case-section-title">
-                  <span>02</span>
-                  <div><p>OUTCOME</p><h4 id="memory-outcome-title">成果与系统价值</h4></div>
-                </div>
-                <div class="outcome-grid">
-                  <div><strong>Task-centric</strong><span>为物体 grounding、关系建模与语义记忆更新提供任务相关视觉表征</span></div>
-                  <div><strong>≈ 36K · 15/17</strong><span>利用规模化 DROID 轨迹预训练，17 项任务中 15 项最优或并列最优</span></div>
-                  <div><strong>Robust</strong><span>Franka 真机部署并展现对环境噪声的鲁棒性，推理阶段保持 VLM-free</span></div>
-                  <div><strong>Aux Encoder</strong><span>可进一步作为 VLA 的辅助视觉编码器，提供目标 grounding 与操作先验</span></div>
-                </div>
-              </section>
-
-              <div class="case-footer">
-                <p>个人负责视觉编码器预训练与表征增强；相关工作已投稿 AAAI 2027，目前处于 Under Review。</p>
-                <a class="button button-secondary" href="#research">查看相关研究 <span>↑</span></a>
               </div>
             </article>
             </div>

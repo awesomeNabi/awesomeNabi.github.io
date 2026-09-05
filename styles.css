@@ -2517,6 +2517,14 @@ a.text-link:hover span {
   flex: 0 0 auto;
 }
 
+.case-footer-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .secondary-projects {
   margin-top: 18px;
   display: grid;
@@ -3156,6 +3164,11 @@ a.text-link:hover span {
 
   .case-footer .button {
     width: 100%;
+  }
+
+  .case-footer-actions {
+    width: 100%;
+    flex-direction: column;
   }
 
   .secondary-project {

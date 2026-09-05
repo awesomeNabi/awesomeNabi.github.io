@@ -27,7 +27,7 @@ const setupCoverTransition = () => {
   let previousScrollY = window.scrollY;
 
   const scene = cover.querySelector("[data-cover-scene]");
-  const getScrollSpan = () => motionPreference.matches
+  const getScrollSpan = () => window.getComputedStyle(scene).position !== "sticky"
     ? cover.offsetHeight
     : Math.max(1, cover.offsetHeight - scene.offsetHeight);
   const getEntryScrollTop = () => cover.offsetTop + getScrollSpan();

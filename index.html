@@ -22,8 +22,8 @@
     <link rel="canonical" href="https://awesomenabi.github.io/" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/pixel-player.webp" as="image" type="image/webp" />
-    <link rel="stylesheet" href="styles.css?v=20260905-crt-standby" />
-    <script src="script.js?v=20260905-crt-standby" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260905-start-dock2" />
+    <script src="script.js?v=20260905-start-dock2" defer></script>
   </head>
 
   <body>
@@ -89,18 +89,20 @@
                 <a class="ps-enter" href="#top" aria-label="进入个人主页"><i aria-hidden="true">▶</i><span>START</span></a>
               </div>
             </div>
-            <a class="crt-start" href="#top">PRESS START TO EXPLORE <span aria-hidden="true">↵</span></a>
+            <div class="cover-start-dock">
+              <svg class="cover-start-wire" viewBox="0 0 160 70" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path class="cover-start-wire__shadow" d="M2 4H36Q48 4 48 16V40Q48 52 60 52H160" />
+                <path class="cover-start-wire__line" d="M2 4H36Q48 4 48 16V40Q48 52 60 52H160" />
+                <circle cx="3" cy="4" r="3" />
+              </svg>
+              <a class="cover-start-button" href="#top" data-cover-start aria-label="START：进入正式个人主页">
+                <span class="cover-start-button__play" aria-hidden="true">▶</span>
+                <b>START</b>
+                <span class="cover-start-button__enter" aria-hidden="true">↵</span>
+              </a>
+              <p>进入个人主页</p>
+            </div>
           </div>
-
-          <aside class="cover-guide" aria-label="游戏画面操作说明">
-            <div class="cover-guide__heading"><span>HOW TO PLAY</span><span aria-hidden="true">↙</span></div>
-            <div class="cover-guide__row"><span class="guide-dpad" aria-hidden="true">✣</span><p>找到你的方向<small>鼠标 / 方向键切换栏目</small></p></div>
-            <div class="cover-guide__row"><span class="guide-button" aria-hidden="true">↗</span><p>进一步了解<small>点击人物卡片查看栏目</small></p></div>
-            <div class="cover-guide__row"><span class="guide-button" aria-hidden="true">⏻</span><p>让屏幕歇一会儿<small>电源键切换雪花屏 · 悬停斜向扫描</small></p></div>
-            <div class="cover-guide__row"><span class="guide-start" aria-hidden="true"></span><p>欢迎进入我的世界<small>START 按钮进入个人主页</small></p></div>
-            <p class="cover-guide__foot">NO HIGH SCORE REQUIRED.</p>
-            <a class="cover-sidequest" href="#projects"><span aria-hidden="true">⌘</span><p>A little side quest?<small>看看我正在构建的项目 ↗</small></p></a>
-          </aside>
         </div>
 
         <div class="cover-footer"><p>© 2026 SIYU XIE <span>/</span> MADE OF CURIOSITY.</p><a href="#top">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a></div>

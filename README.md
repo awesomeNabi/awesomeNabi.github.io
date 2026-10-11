@@ -8,6 +8,8 @@
 
 ## 本地预览
 
+三维场景图项目在首页 Projects 中提供特色卡片，并通过 `projects/scene-graph.html` 展示系统链路、跨视角关联、多视角融合与语义关系输出。页面与 `scene-graph.css` 共用网站的冷白浅蓝视觉；CRT 封面和其他栏目保持原有行为。`assets/scene-graph-hero.png` 为系统概念图；`scene-graph-rgb.jpg`、`scene-graph-bbox.jpg`、`scene-graph-result.png` 来自项目仓库 `example/test0721` 第 000240 帧的历史输出，页面标明可能存在误检与关系类别混淆。场景图内容明确区分在线几何跟踪与离线关系生成。
+
 在项目目录启动任意静态文件服务器，例如：
 
 ```powershell

@@ -23,6 +23,7 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/pixel-player.webp" as="image" type="image/webp" />
     <link rel="stylesheet" href="styles.css?v=20260905-start-dock2" />
+    <link rel="stylesheet" href="scene-graph.css?v=20261011" />
     <script src="script.js?v=20260905-start-dock2" defer></script>
   </head>
 
@@ -512,10 +513,42 @@
             </header>
 
             <div class="project-case-list">
+            <article class="case-study scene-feature" aria-labelledby="scene-feature-title">
+              <div class="case-heading">
+                <div>
+                  <p class="case-number">PROJECT / 01 · OBJECT-CENTRIC PERCEPTION</p>
+                  <h3 id="scene-feature-title">物体级三维场景图</h3>
+                  <p class="case-subtitle">从移动观察到对象、属性与关系，让机器人看见结构化的世界。</p>
+                </div>
+                <span class="case-status case-status-blue"><i aria-hidden="true"></i> RGB-D → SCENE GRAPH</span>
+              </div>
+              <figure class="scene-feature__visual">
+                <a href="projects/scene-graph.html" aria-label="查看物体级三维场景图项目详情">
+                  <img src="assets/scene-graph-hero.png" alt="四足带臂机器人通过臂载 RGB-D 相机观察室内物体，经多视角关联和三维框融合构建对象属性及关系的系统概念图" width="1672" height="941" loading="lazy" decoding="async" />
+                </a>
+                <figcaption>系统概念图 · 四足带臂平台 / 臂载相机 · AI 绘制，非运行截图</figcaption>
+              </figure>
+              <div class="scene-feature__body">
+                <p class="scene-feature__lead">将 RGB-D 与相机位姿中的逐帧观测，组织成世界坐标下的物体表示，再生成结构化语义属性、功能关系与位置关系。</p>
+                <div class="scene-feature__points">
+                  <div><span>01 / PERCEIVE</span><h4>移动感知</h4><p>CuTR 三维框检测与 OpenCLIP 类别匹配，统一真机和仿真轨迹输入。</p></div>
+                  <div><span>02 / ASSOCIATE</span><h4>跨视角对象关联</h4><p>三维重叠关联、小物体重投影匹配与 BoxFusion 多视角框优化。</p></div>
+                  <div><span>03 / UNDERSTAND</span><h4>语义与关系建模</h4><p>Qwen 视觉语言模型离线补充对象属性及功能、位置两类关系。</p></div>
+                </div>
+                <p class="scene-feature__boundary"><span>在线</span> 几何跟踪与可视化 <b aria-hidden="true">/</b> <span>离线</span> 检测导出与关系图生成</p>
+              </div>
+              <div class="case-footer">
+                <p>多视角几何 × 物体语义 × 可交互关系</p>
+                <div class="case-footer-actions">
+                  <a class="button button-secondary" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">GitHub 仓库 <span aria-hidden="true">↗</span></a>
+                  <a class="button button-primary" href="projects/scene-graph.html">查看项目详情 <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
             <article class="case-study case-study-geek">
               <div class="case-heading">
                 <div>
-                  <p class="case-number">PROJECT / 01 · 2026.03—2026.07</p>
+                  <p class="case-number">PROJECT / 02 · 2026.03—2026.07</p>
                   <h3>Geek Mind — 跨本体具身 Agent Runtime</h3>
                   <p class="case-subtitle">上海码极客人工智能科技有限公司 · 核心框架研发</p>
                 </div>

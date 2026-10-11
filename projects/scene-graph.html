@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="物体级三维场景图：以 RGB-D 和相机位姿为输入，结合 CuTR、OpenCLIP、BoxFusion 与 Qwen，完成跨视角对象关联、三维框融合及离线语义关系建模。" />
+    <meta name="theme-color" content="#f4f8fb" />
+    <meta property="og:title" content="物体级三维场景图 — 谢思宇 Siyu Xie" />
+    <meta property="og:description" content="从移动观察到对象、属性与关系。多视角三维感知与离线场景图构建。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://awesomenabi.github.io/projects/scene-graph.html" />
+    <meta property="og:image" content="https://awesomenabi.github.io/assets/scene-graph-hero.png" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>物体级三维场景图 — 谢思宇 Siyu Xie</title>
+    <link rel="canonical" href="https://awesomenabi.github.io/projects/scene-graph.html" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../styles.css?v=20260905-start-dock2" />
+    <link rel="stylesheet" href="../scene-graph.css?v=20261011" />
+  </head>
+  <body class="scene-page">
+    <a class="skip-link" href="#main">跳到主要内容</a>
+    <header class="scene-header">
+      <div class="scene-shell scene-header__inner">
+        <a class="scene-home" href="../index.html#projects"><span aria-hidden="true">←</span> 谢思宇 <small>SIYU XIE / PROJECTS</small></a>
+        <nav class="scene-nav" aria-label="项目导航"><a href="#pipeline">系统链路</a><a href="#design">关键设计</a><a href="#outputs">输出</a><a href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
+      </div>
+    </header>
+
+    <main class="scene-shell" id="main">
+      <section class="scene-intro" aria-labelledby="scene-title">
+        <p class="scene-eyebrow">SCENE GRAPH / OBJECT-CENTRIC ROBOT PERCEPTION</p>
+        <div class="scene-intro__grid">
+          <h1 id="scene-title">物体级三维场景图<span>从移动观察，到结构化理解。</span></h1>
+          <div>
+            <p class="scene-intro__description">机器人从不同视角看见同一个空间。这个项目把逐帧 RGB-D 观测组织成世界坐标下的物体，再补充它们的属性、功能与相对位置，连接几何感知与语义场景建模。</p>
+            <div class="scene-actions">
+              <a class="scene-link scene-link--primary" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">代码仓库 · 需访问权限 <span aria-hidden="true">↗</span></a>
+              <a class="scene-link" href="#pipeline">探索系统链路 <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="scene-spec" aria-label="项目技术概览"><span><i aria-hidden="true"></i> RGB-D + CAMERA POSE</span><span><i aria-hidden="true"></i> MULTI-VIEW BOX FUSION</span><span><i aria-hidden="true"></i> OBJECTS + RELATIONS</span></div>
+      </section>
+
+      <figure class="scene-hero">
+        <a href="../assets/scene-graph-hero.png" aria-label="打开完整系统概念图">
+          <img src="../assets/scene-graph-hero.png" alt="四足带臂机器人使用安装在机械臂上的 RGB-D 相机观察室内物体，通过多视角关联融合三维框，再生成物体属性、功能关系和位置关系" width="1672" height="941" fetchpriority="high" />
+        </a>
+        <figcaption><b>系统概念图 · 四足带臂平台 / 臂载 RGB-D 相机</b><span>AI 绘制，用于解释系统流程；非运行截图。</span></figcaption>
+      </figure>
+
+      <section class="scene-section" id="pipeline" aria-labelledby="pipeline-title">
+        <div class="scene-section__header">
+          <div><p class="scene-section__index">01 / THE PIPELINE</p><h2 id="pipeline-title">一条链路，连接几何与语义。</h2></div>
+          <p class="scene-section__summary">真机与仿真共享 RGB-D、内参和相机位姿这一输入契约。几何层处理“看到了哪个物体”，语义层进一步描述“它是什么、与谁有关”。</p>
+        </div>
+        <div class="scene-flow">
+          <article class="scene-step"><div class="scene-step__number">01 <span aria-hidden="true">→</span></div><h3>采集与对齐</h3><p>彩色图、深度与相机位姿组成单帧输入。利用相机到世界的变换，把不同视角放入统一坐标系。</p><small>RGB-D · intrinsics · camera pose</small></article>
+          <article class="scene-step"><div class="scene-step__number">02 <span aria-hidden="true">→</span></div><h3>物体检测与分类</h3><p>CuTR 预测带朝向的三维框；OpenCLIP 对图像裁剪与配置词表进行匹配，为保留的物体赋予类别。</p><small>CuTR · OpenCLIP · 3D boxes</small></article>
+          <article class="scene-step"><div class="scene-step__number">03 <span aria-hidden="true">→</span></div><h3>跨视角关联与融合</h3><p>以三维重叠关联物体，以二维重投影补充小物体匹配，再通过多视角观测优化框的中心与尺寸。</p><small>3D IoU · reprojection · BoxFusion</small></article>
+          <article class="scene-step"><div class="scene-step__number">04 <span aria-hidden="true">↗</span></div><h3>属性与关系生成</h3><p>离线读取关键帧原图和检测 JSON，由 Qwen 描述物体属性，并建立功能关系与位置关系。</p><small>Qwen · attributes · scene graph</small></article>
+        </div>
+        <div class="scene-modes" aria-label="当前实现的两条运行路径">
+          <div class="scene-mode"><b>在线</b><p><strong>几何跟踪与 Rerun 可视化</strong><br />实时输入 RGB-D 与位姿，按关键帧运行检测，更新世界坐标下的三维框及相机轨迹。</p></div>
+          <div class="scene-mode"><b>离线</b><p><strong>轨迹处理、检测导出与关系图</strong><br />保存的真机或仿真轨迹先导出图像与 JSON，再运行视觉语言模型生成场景图。</p></div>
+        </div>
+      </section>
+
+      <section class="scene-section" id="design" aria-labelledby="design-title">
+        <div class="scene-section__header">
+          <div><p class="scene-section__index">02 / KEY IDEAS</p><h2 id="design-title">重点在于，把多次观察连起来。</h2></div>
+          <p class="scene-section__summary">一次检测只是一帧中的观察。跨视角关联、几何融合与物体语义共同构成可继续扩展的场景表示。</p>
+        </div>
+        <div class="scene-design">
+          <article><span>A / OBJECT ASSOCIATION</span><h3>三维关联之外，补上小物体</h3><p>在世界坐标中进行带朝向的三维框重叠判断；针对小物体，再把历史三维框投影回当前画面做二维匹配，补充仅靠三维重叠难以建立的对应关系。</p></article>
+          <article><span>B / MULTI-VIEW GEOMETRY</span><h3>用不同视角，约束同一个框</h3><p>积累具有视角差异的观测，由 BoxFusion 优化框中心与尺寸，使三维表示投回历史视图时与观测更一致。系统直接维护物体框，无需先构建完整网格。</p></article>
+          <article><span>C / SEMANTIC STRUCTURE</span><h3>同时表达“是什么”与“能做什么”</h3><p>语义层包含颜色、材质、状态和功能描述。功能关系连接可交互元件与主体，例如开关与灯；位置关系描述物体对之间的空间关系。</p></article>
+          <article><span>D / CONNECTED EVIDENCE</span><h3>让观测、几何和语义可以对应</h3><p>检测 JSON 用 <code>ann_id</code> 连接关键帧中的框、世界坐标几何与后续语义记录。当前关联会保留高分检测的编号，因此它是关联结果的主键，仍需检查错配和编号切换。</p></article>
+        </div>
+      </section>
+
+      <section class="scene-section" id="outputs" aria-labelledby="outputs-title">
+        <div class="scene-section__header">
+          <div><p class="scene-section__index">03 / INSPECTABLE OUTPUTS</p><h2 id="outputs-title">从图像中的框，到对象与关系。</h2></div>
+          <p class="scene-section__summary">图像帮助检查感知结果，结构化文件承载物体表示。以下为仓库随附的 test0721 历史输出，展示同一关键帧的原图、检测与关系图。</p>
+        </div>
+        <div class="scene-output">
+          <div class="scene-result-gallery">
+            <figure><a href="../assets/scene-graph-rgb.jpg" aria-label="查看完整历史原始帧"><img src="../assets/scene-graph-rgb.jpg" alt="test0721 轨迹第 000240 帧的室内原始图像，包含扶手椅、书桌、灯与装饰画" width="640" height="480" loading="lazy" decoding="async" /></a><figcaption><span>01 / RGB</span><b>原始观测</b></figcaption></figure>
+            <figure><a href="../assets/scene-graph-bbox.jpg" aria-label="查看完整历史检测图"><img src="../assets/scene-graph-bbox.jpg" alt="同一历史关键帧中的检测框、类别与对象编号，可用于检查检测和关联结果" width="640" height="480" loading="lazy" decoding="async" /></a><figcaption><span>02 / DETECTIONS</span><b>检测与对象编号</b></figcaption></figure>
+            <figure><a href="../assets/scene-graph-result.png" aria-label="查看完整历史关系图"><img src="../assets/scene-graph-result.png" alt="test0721 第 000240 帧的历史场景图输出，以带标签的圆节点展示场景中的对象" width="640" height="480" loading="lazy" decoding="async" /></a><figcaption><span>03 / GRAPH</span><b>历史场景图输出</b></figcaption></figure>
+          </div>
+          <p class="scene-result-caption">test0721 / frame 000240 · <a href="https://github.com/awesomeNabi/scence-graph/tree/main/example/test0721" target="_blank" rel="noreferrer">查看原始样例与 JSON ↗</a><br />历史输出保留原始推断，可能包含误检及关系类别混淆；用于展示产物形式，非本次重跑或定量评测结果。</p>
+          <div class="scene-output__body">
+            <p>THREE LAYERS OF OUTPUT</p>
+            <dl>
+              <div><dt>01 · 物体几何</dt><dd>逐关键帧 JSON 包含 <code>ann_id</code>、类别、二维框，以及世界坐标下的中心、尺寸、旋转与角点。</dd></div>
+              <div><dt>02 · 语义属性</dt><dd><code>all_objs.json</code> 累积物体描述，连接视觉对象与颜色、材质、状态、功能等语义信息。</dd></div>
+              <div><dt>03 · 功能与位置关系</dt><dd>分别保存 <code>all_func_relationships.json</code> 和 <code>all_position_relationships.json</code>，支持二维关系图及 Rerun 三维功能边叠加。</dd></div>
+            </dl>
+          </div>
+        </div>
+        <p class="scene-note">当前实现覆盖感知与场景图构建：在线入口更新几何结果，关系推理由保存的轨迹离线生成。场景图为后续具身任务提供结构化输入，自主操作是进一步的应用方向。</p>
+      </section>
+
+      <aside class="scene-source" aria-label="项目源码入口">
+        <div><h2>继续探索实现。</h2><p>查看运行入口、数据约定与当前限制。<br />基于 CuTR / BoxFusion、OpenCLIP、Qwen 与相关开源组件构建。<br />项目代码仓库当前为私有，访问需要相应权限。</p></div>
+        <a class="scene-link" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">awesomeNabi / scence-graph <span aria-hidden="true">↗</span></a>
+      </aside>
+    </main>
+    <footer class="scene-page-footer"><div class="scene-shell"><span>© 2026 SIYU XIE · SCENE GRAPH</span><a href="../index.html#projects">返回个人主页 <span aria-hidden="true">↗</span></a></div></footer>
+  </body>
+</html>

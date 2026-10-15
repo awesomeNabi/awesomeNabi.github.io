@@ -47,13 +47,37 @@
 .scene-recording { display: inline-flex; flex-shrink: 0; align-items: center; gap: 8px; padding: 7px 11px; border: 1px solid #c9dce4; border-radius: 6px; color: #40717d; background: #edf5f7; font-size: 10px; }
 .scene-recording i { width: 6px; height: 6px; border-radius: 50%; background: #22827b; }
 .scene-recording b { padding-left: 8px; border-left: 1px solid #c9dce4; font: 11px ui-monospace, SFMono-Regular, Consolas, monospace; }
+.scene-demo__stage { display: grid; grid-template-columns: minmax(0, 1fr) 258px; align-items: start; gap: 18px; }
 .scene-demo__viewer { overflow: hidden; margin: 0; border: 1px solid #203a4b; border-radius: 13px; background: #0e1418; box-shadow: 0 16px 50px #24465f12; }
 .scene-demo__toolbar { display: flex; justify-content: space-between; gap: 16px; padding: 13px 19px; color: #a9c3cf; background: #14232c; border-bottom: 1px solid #2b3d47; font: 9px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .07em; }
-.scene-demo video { display: block; width: 100%; height: auto; aspect-ratio: 2940 / 1596; background: #0d1112; }
+.scene-demo__viewer video { display: block; width: 100%; height: auto; aspect-ratio: 2940 / 1596; background: #0d1112; }
 .scene-demo__viewer figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 14px 19px; border-top: 1px solid #283b47; color: #9db3bf; font-size: 10px; line-height: 1.7; }
 .scene-demo__viewer figcaption b { color: #e1edf3; font-weight: 650; }
 .scene-demo__viewer figcaption > div { display: flex; flex-wrap: wrap; gap: 18px; margin-left: auto; }
 .scene-demo__viewer a { color: #bedce8; text-decoration: underline; text-underline-offset: 3px; }
+.scene-box-detail { overflow: hidden; border: 1px solid #cbdce5; border-radius: 11px; background: #fff; box-shadow: 0 8px 24px #24465f09; }
+.scene-box-detail__preview { position: relative; display: block; overflow: hidden; background: #11171b; cursor: zoom-in; }
+.scene-box-detail__preview video { display: block; width: 100%; height: auto; aspect-ratio: 1548 / 942; object-fit: contain; }
+.scene-box-detail__zoom { position: absolute; right: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 14px; padding: 7px 10px; border: 1px solid #ffffff40; border-radius: 5px; color: #fff; background: #14232cdb; font-size: 10px; backdrop-filter: blur(6px); }
+.scene-box-detail__zoom b { font-size: 15px; font-weight: 400; }
+.scene-box-detail__body { padding: 17px 18px 19px; }
+.scene-box-detail__eyebrow { margin: 0 0 9px; color: var(--scene-cyan); font: 9px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .07em; }
+.scene-box-detail h3 { margin: 0 0 7px; color: var(--scene-navy); font-size: 16px; line-height: 1.5; }
+.scene-box-detail__body > p:last-child { margin: 0; color: #637588; font-size: 11px; line-height: 1.85; }
+.scene-box-detail__preview:hover .scene-box-detail__zoom { background: #16485a; }
+.scene-box-dialog { width: min(1280px, calc(100% - 48px)); max-width: none; max-height: calc(100% - 48px); padding: 0; margin: auto; overflow: auto; border: 1px solid #3a5363; border-radius: 13px; background: #10191f; color: #e1edf3; box-shadow: 0 30px 100px #0006; }
+.scene-box-dialog::backdrop { background: #09141dd9; backdrop-filter: blur(8px); }
+.scene-box-dialog__header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 24px; border-bottom: 1px solid #2b3d47; }
+.scene-box-dialog__header p { margin: 0 0 6px; color: #a4c8d5; font: 9px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .08em; }
+.scene-box-dialog__header h2 { margin: 0; font-size: 21px; line-height: 1.4; }
+.scene-box-dialog__close { display: inline-flex; align-items: center; gap: 16px; flex-shrink: 0; min-height: 40px; padding: 8px 13px; border: 1px solid #425c6b; border-radius: 6px; color: #e1edf3; background: #ffffff08; font-family: inherit; font-size: 11px; cursor: pointer; }
+.scene-box-dialog__close span { font-size: 21px; font-weight: 400; line-height: 1; }
+.scene-box-dialog__close:hover { background: #ffffff18; }
+.scene-box-dialog video { display: block; width: 100%; height: auto; max-height: calc(100svh - 220px); object-fit: contain; background: #090d10; }
+.scene-box-dialog__footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; padding: 14px 24px; border-top: 1px solid #2b3d47; color: #a9bfcb; font-size: 10px; line-height: 1.7; }
+.scene-box-dialog__footer a { color: #c6e4ee; text-decoration: underline; text-underline-offset: 3px; }
+.scene-box-dialog :focus-visible { outline: 2px solid #79c1d4; outline-offset: 3px; }
+.scene-page:has(.scene-box-dialog[open]) { overflow: hidden; }
 .scene-demo__panels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 25px; }
 .scene-demo__panels article { min-width: 0; padding: 1px 0 1px 14px; border-left: 2px solid #a4c2cf; }
 .scene-demo__panels span { color: var(--scene-cyan); font: 9px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .05em; }
@@ -120,6 +144,9 @@
   .scene-intro__grid { grid-template-columns: 1fr; gap: 27px; }
   .scene-intro__description { max-width: 650px; }
   .scene-flow { grid-template-columns: 1fr 1fr; }
+  .scene-demo__stage { grid-template-columns: 1fr; }
+  .scene-box-detail { display: grid; grid-template-columns: 180px minmax(0, 1fr); width: min(100%, 550px); justify-self: end; align-items: center; }
+  .scene-box-detail__body { padding: 16px 19px; }
   .scene-demo__panels { grid-template-columns: 1fr 1fr; gap: 22px; }
   .scene-feature .case-heading { flex-wrap: wrap; }
 }
@@ -147,6 +174,20 @@
   .scene-demo__toolbar > span:last-child { display: none; }
   .scene-demo__viewer figcaption { padding: 12px; gap: 6px 12px; font-size: 9px; }
   .scene-demo__viewer figcaption > div { flex-basis: 100%; margin: 1px 0 0; }
+  .scene-demo__stage { gap: 14px; }
+  .scene-box-detail { grid-template-columns: 130px minmax(0, 1fr); width: 100%; }
+  .scene-box-detail__body { padding: 14px; }
+  .scene-box-detail__eyebrow { margin-bottom: 7px; font-size: 8px; }
+  .scene-box-detail h3 { font-size: 14px; }
+  .scene-box-detail__body > p:last-child { font-size: 10px; }
+  .scene-box-detail__zoom { right: 6px; bottom: 6px; padding: 4px 7px; gap: 10px; font-size: 9px; }
+  .scene-box-detail__zoom b { font-size: 13px; }
+  .scene-box-dialog { width: calc(100% - 24px); max-height: calc(100% - 24px); border-radius: 9px; }
+  .scene-box-dialog__header { padding: 15px; gap: 12px; }
+  .scene-box-dialog__header h2 { font-size: 17px; }
+  .scene-box-dialog__close { padding: 7px 10px; gap: 10px; }
+  .scene-box-dialog video { max-height: calc(100svh - 195px); }
+  .scene-box-dialog__footer { padding: 12px 15px; font-size: 9px; }
   .scene-demo__panels { margin-top: 20px; gap: 19px 15px; }
   .scene-demo__panels article { padding-left: 10px; }
   .scene-demo__panels span { font-size: 8px; }
@@ -185,6 +226,7 @@
   .scene-section { padding-top: 30px; }
   .scene-step, .scene-design article, .scene-output, .scene-source { break-inside: avoid; }
   .scene-demo__viewer { break-inside: avoid; }
+  .scene-box-detail { break-inside: avoid; }
 }
 @media (prefers-reduced-motion: reduce) {
   .scene-concept summary i { transition: none; }

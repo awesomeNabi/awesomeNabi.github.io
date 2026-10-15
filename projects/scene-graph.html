@@ -17,8 +17,8 @@
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../styles.css?v=20260905-start-dock2" />
     <link rel="preload" as="image" href="../assets/scene-graph-rerun-poster.jpg" />
-    <link rel="stylesheet" href="../scene-graph.css?v=20261015-rerun-2x" />
-    <script src="../scene-graph-demo.js?v=20261015-rerun-2x" defer></script>
+    <link rel="stylesheet" href="../scene-graph.css?v=20261015-box-detail" />
+    <script src="../scene-graph-demo.js?v=20261015-box-detail" defer></script>
   </head>
   <body class="scene-page">
     <a class="skip-link" href="#main">跳到主要内容</a>
@@ -48,16 +48,28 @@
       <section class="scene-demo" id="demo" aria-labelledby="demo-title">
         <div class="scene-demo__heading">
           <div><p class="scene-section__index">IN ACTION / RERUN</p><h2 id="demo-title">沿着轨迹，逐帧读懂场景。</h2></div>
-          <span class="scene-recording"><i aria-hidden="true"></i> 实际运行录屏 <b>2×</b></span>
+          <span class="scene-recording"><i aria-hidden="true"></i> 主视图回放 <b>2×</b></span>
         </div>
+        <div class="scene-demo__stage">
         <figure class="scene-demo__viewer">
           <div class="scene-demo__toolbar"><span>RERUN / 1_MP3D_0417</span><span>3D + RGB + DEPTH + RELATIONS</span></div>
-          <video id="rerun-video" controls loop muted playsinline preload="metadata" poster="../assets/scene-graph-rerun-poster.jpg" width="2940" height="1596" aria-label="Rerun 三维场景图实际运行录屏，已按原录屏两倍速处理" aria-describedby="demo-description demo-caption">
+          <video id="rerun-video" data-motion-preview controls loop muted playsinline preload="metadata" poster="../assets/scene-graph-rerun-poster.jpg" width="2940" height="1596" aria-label="Rerun 三维场景图实际运行录屏，已按原录屏两倍速处理" aria-describedby="demo-description demo-caption">
             <source src="../assets/scene-graph-rerun-2x.mp4" type="video/mp4" />
             你的浏览器暂不支持视频播放，可<a href="../assets/scene-graph-rerun-2x.gif">查看两倍速 GIF</a>。
           </video>
           <figcaption><b>多视图同步回放</b><span>2 倍速 · 约 10 秒 · 可暂停、拖动与全屏</span><div><a href="../assets/scene-graph-rerun-2x.mp4" target="_blank" rel="noreferrer">原尺寸视频 ↗</a><a href="../assets/scene-graph-rerun-2x.gif" target="_blank" rel="noreferrer">2× GIF ↗</a></div></figcaption>
         </figure>
+        <aside class="scene-box-detail" aria-labelledby="box-detail-title">
+          <a class="scene-box-detail__preview" id="box-detail-open" href="../assets/scene-graph-box-detail.mp4" target="_blank" rel="noreferrer" aria-label="放大查看 3D box 可视化" aria-haspopup="dialog" aria-controls="box-detail-dialog">
+            <video id="box-detail-preview" data-motion-preview loop muted playsinline preload="metadata" poster="../assets/scene-graph-box-detail-poster.jpg" width="1548" height="942" aria-hidden="true" tabindex="-1">
+              <source src="../assets/scene-graph-box-preview.mp4" type="video/mp4" />
+              <img src="../assets/scene-graph-box-detail-poster.jpg" alt="" width="1548" height="942" />
+            </video>
+            <span class="scene-box-detail__zoom" aria-hidden="true">点击放大 <b>↗</b></span>
+          </a>
+          <div class="scene-box-detail__body"><p class="scene-box-detail__eyebrow">CLOSE-UP / 3D BOX</p><h3 id="box-detail-title">近看三维框与标签</h3><p>从三维视角，查看物体框线、对象编号与类别。</p></div>
+        </aside>
+        </div>
         <div class="scene-demo__panels" id="demo-description">
           <article><span>01 / 3D WORLD</span><h3>物体在空间中的位置</h3><p>左上展示三维场景与物体编号、类别；功能关系以连线和文字叠加到场景中。</p></article>
           <article><span>02 / RGB</span><h3>对应的原始观察</h3><p>左下保留相机彩色画面，把空间里的物体与这一时刻的视觉证据对应起来。</p></article>
@@ -136,6 +148,14 @@
         <a class="scene-link" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">awesomeNabi / scence-graph <span aria-hidden="true">↗</span></a>
       </aside>
     </main>
+    <dialog class="scene-box-dialog" id="box-detail-dialog" aria-labelledby="box-dialog-title">
+      <div class="scene-box-dialog__header"><div><p>CLOSE-UP / 3D BOX</p><h2 id="box-dialog-title">三维框 · 细节放大</h2></div><button class="scene-box-dialog__close" type="button" id="box-detail-close" aria-label="关闭 3D box 放大展示">关闭 <span aria-hidden="true">×</span></button></div>
+      <video id="box-detail-player" controls loop muted playsinline preload="none" poster="../assets/scene-graph-box-detail-poster.jpg" width="1548" height="942" aria-label="三维物体框、对象编号与类别的放大可视化录屏">
+        <source src="../assets/scene-graph-box-detail.mp4" type="video/mp4" />
+        你的浏览器暂不支持视频播放，可<a href="../assets/scene-graph-box-detail.mp4">打开原尺寸视频</a>。
+      </video>
+      <div class="scene-box-dialog__footer"><span>3D box 可视化 · 支持暂停、拖动与全屏</span><a href="../assets/scene-graph-box-detail.mp4" target="_blank" rel="noreferrer">原尺寸视频 ↗</a></div>
+    </dialog>
     <footer class="scene-page-footer"><div class="scene-shell"><span>© 2026 SIYU XIE · SCENE GRAPH</span><a href="../index.html#projects">返回个人主页 <span aria-hidden="true">↗</span></a></div></footer>
   </body>
 </html>

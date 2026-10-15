@@ -3,27 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="物体级三维场景图：以 RGB-D 和相机位姿为输入，结合 CuTR、OpenCLIP、BoxFusion 与 Qwen，完成跨视角对象关联、三维框融合及离线语义关系建模。" />
+    <meta name="description" content="物体级三维场景图：从 RGB-D 与相机位姿，到物体关联、三维框融合和语义关系。通过 Rerun 实际运行录屏，同步查看三维场景、RGB、深度与功能关系。" />
     <meta name="theme-color" content="#f4f8fb" />
     <meta property="og:title" content="物体级三维场景图 — 谢思宇 Siyu Xie" />
-    <meta property="og:description" content="从移动观察到对象、属性与关系。多视角三维感知与离线场景图构建。" />
+    <meta property="og:description" content="从移动观察到对象、属性与关系。观看 Rerun 实际运行录屏，同步查看三维场景、RGB、深度与功能关系。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://awesomenabi.github.io/projects/scene-graph.html" />
-    <meta property="og:image" content="https://awesomenabi.github.io/assets/scene-graph-hero.png" />
+    <meta property="og:image" content="https://awesomenabi.github.io/assets/scene-graph-rerun-poster.jpg" />
     <meta property="og:locale" content="zh_CN" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>物体级三维场景图 — 谢思宇 Siyu Xie</title>
     <link rel="canonical" href="https://awesomenabi.github.io/projects/scene-graph.html" />
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../styles.css?v=20260905-start-dock2" />
-    <link rel="stylesheet" href="../scene-graph.css?v=20261011" />
+    <link rel="preload" as="image" href="../assets/scene-graph-rerun-poster.jpg" />
+    <link rel="stylesheet" href="../scene-graph.css?v=20261015-rerun-2x" />
+    <script src="../scene-graph-demo.js?v=20261015-rerun-2x" defer></script>
   </head>
   <body class="scene-page">
     <a class="skip-link" href="#main">跳到主要内容</a>
     <header class="scene-header">
       <div class="scene-shell scene-header__inner">
         <a class="scene-home" href="../index.html#projects"><span aria-hidden="true">←</span> 谢思宇 <small>SIYU XIE / PROJECTS</small></a>
-        <nav class="scene-nav" aria-label="项目导航"><a href="#pipeline">系统链路</a><a href="#design">关键设计</a><a href="#outputs">输出</a><a href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
+        <nav class="scene-nav" aria-label="项目导航"><a href="#demo">运行演示</a><a href="#pipeline">系统链路</a><a href="#design">关键设计</a><a href="#outputs">输出</a><a href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
       </div>
     </header>
 
@@ -35,20 +37,35 @@
           <div>
             <p class="scene-intro__description">机器人从不同视角看见同一个空间。这个项目把逐帧 RGB-D 观测组织成世界坐标下的物体，再补充它们的属性、功能与相对位置，连接几何感知与语义场景建模。</p>
             <div class="scene-actions">
-              <a class="scene-link scene-link--primary" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">代码仓库 · 需访问权限 <span aria-hidden="true">↗</span></a>
-              <a class="scene-link" href="#pipeline">探索系统链路 <span aria-hidden="true">↓</span></a>
+              <a class="scene-link scene-link--primary" href="#demo">观看 Rerun 演示 <span aria-hidden="true">↓</span></a>
+              <a class="scene-link" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">代码仓库 · 需访问权限 <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </div>
         <div class="scene-spec" aria-label="项目技术概览"><span><i aria-hidden="true"></i> RGB-D + CAMERA POSE</span><span><i aria-hidden="true"></i> MULTI-VIEW BOX FUSION</span><span><i aria-hidden="true"></i> OBJECTS + RELATIONS</span></div>
       </section>
 
-      <figure class="scene-hero">
-        <a href="../assets/scene-graph-hero.png" aria-label="打开完整系统概念图">
-          <img src="../assets/scene-graph-hero.png" alt="四足带臂机器人使用安装在机械臂上的 RGB-D 相机观察室内物体，通过多视角关联融合三维框，再生成物体属性、功能关系和位置关系" width="1672" height="941" fetchpriority="high" />
-        </a>
-        <figcaption><b>系统概念图 · 四足带臂平台 / 臂载 RGB-D 相机</b><span>AI 绘制，用于解释系统流程；非运行截图。</span></figcaption>
-      </figure>
+      <section class="scene-demo" id="demo" aria-labelledby="demo-title">
+        <div class="scene-demo__heading">
+          <div><p class="scene-section__index">IN ACTION / RERUN</p><h2 id="demo-title">沿着轨迹，逐帧读懂场景。</h2></div>
+          <span class="scene-recording"><i aria-hidden="true"></i> 实际运行录屏 <b>2×</b></span>
+        </div>
+        <figure class="scene-demo__viewer">
+          <div class="scene-demo__toolbar"><span>RERUN / 1_MP3D_0417</span><span>3D + RGB + DEPTH + RELATIONS</span></div>
+          <video id="rerun-video" controls loop muted playsinline preload="metadata" poster="../assets/scene-graph-rerun-poster.jpg" width="2940" height="1596" aria-label="Rerun 三维场景图实际运行录屏，已按原录屏两倍速处理" aria-describedby="demo-description demo-caption">
+            <source src="../assets/scene-graph-rerun-2x.mp4" type="video/mp4" />
+            你的浏览器暂不支持视频播放，可<a href="../assets/scene-graph-rerun-2x.gif">查看两倍速 GIF</a>。
+          </video>
+          <figcaption><b>多视图同步回放</b><span>2 倍速 · 约 10 秒 · 可暂停、拖动与全屏</span><div><a href="../assets/scene-graph-rerun-2x.mp4" target="_blank" rel="noreferrer">原尺寸视频 ↗</a><a href="../assets/scene-graph-rerun-2x.gif" target="_blank" rel="noreferrer">2× GIF ↗</a></div></figcaption>
+        </figure>
+        <div class="scene-demo__panels" id="demo-description">
+          <article><span>01 / 3D WORLD</span><h3>物体在空间中的位置</h3><p>左上展示三维场景与物体编号、类别；功能关系以连线和文字叠加到场景中。</p></article>
+          <article><span>02 / RGB</span><h3>对应的原始观察</h3><p>左下保留相机彩色画面，把空间里的物体与这一时刻的视觉证据对应起来。</p></article>
+          <article><span>03 / DEPTH</span><h3>同一时刻的几何信息</h3><p>右上显示深度图；RGB、深度和三维记录使用同一时间轴，便于对照观察。</p></article>
+          <article><span>04 / RELATIONS</span><h3>从对象到功能关系</h3><p>右下列出匹配到三维物体的功能关系，随时间轴推进更新文本与场景连线。</p></article>
+        </div>
+        <p class="scene-demo__caption" id="demo-caption">场景 1_MP3D_0417 · 由原始 GIF 制作的 2 倍速回放。功能关系读取离线生成的 JSON，再按物体编号叠加到 Rerun；录屏保留原始预测，可能包含类别或关系误判。</p>
+      </section>
 
       <section class="scene-section" id="pipeline" aria-labelledby="pipeline-title">
         <div class="scene-section__header">
@@ -65,6 +82,16 @@
           <div class="scene-mode"><b>在线</b><p><strong>几何跟踪与 Rerun 可视化</strong><br />实时输入 RGB-D 与位姿，按关键帧运行检测，更新世界坐标下的三维框及相机轨迹。</p></div>
           <div class="scene-mode"><b>离线</b><p><strong>轨迹处理、检测导出与关系图</strong><br />保存的真机或仿真轨迹先导出图像与 JSON，再运行视觉语言模型生成场景图。</p></div>
         </div>
+        <p class="scene-note">检测也可使用清洗后的 Matterport3D 标注框，通过逐帧视锥与深度遮挡检查生成可见物体。模型检测与标注路线共用检测 JSON 接口，后续属性与关系生成流程一致。</p>
+        <details class="scene-concept">
+          <summary>查看系统概念图 <span>四足带臂平台 / RGB-D / 对象与关系 <i aria-hidden="true">＋</i></span></summary>
+          <figure class="scene-hero">
+            <a href="../assets/scene-graph-hero.png" aria-label="打开完整系统概念图">
+              <img src="../assets/scene-graph-hero.png" alt="四足带臂机器人使用臂载 RGB-D 相机观察室内物体，通过多视角关联融合三维框，再生成物体属性、功能关系和位置关系" width="1672" height="941" loading="lazy" decoding="async" />
+            </a>
+            <figcaption><b>系统概念图 · 四足带臂平台 / 臂载 RGB-D 相机</b><span>AI 绘制，用于解释系统流程；非运行截图。</span></figcaption>
+          </figure>
+        </details>
       </section>
 
       <section class="scene-section" id="design" aria-labelledby="design-title">

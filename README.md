@@ -8,7 +8,9 @@
 
 ## 本地预览
 
-三维场景图项目在首页 Projects 中提供特色卡片，并通过 `projects/scene-graph.html` 展示系统链路、跨视角关联、多视角融合与语义关系输出。页面与 `scene-graph.css` 共用网站的冷白浅蓝视觉；CRT 封面和其他栏目保持原有行为。`assets/scene-graph-hero.png` 为系统概念图；`scene-graph-rgb.jpg`、`scene-graph-bbox.jpg`、`scene-graph-result.png` 来自项目仓库 `example/test0721` 第 000240 帧的历史输出，页面标明可能存在误检与关系类别混淆。场景图内容明确区分在线几何跟踪与离线关系生成。
+三维场景图项目在首页 Projects 中提供特色卡片，并通过 `projects/scene-graph.html` 展示 Rerun 实际运行录屏、系统链路、跨视角关联、多视角融合与语义关系输出。页面与 `scene-graph.css` 共用网站的冷白浅蓝视觉；CRT 封面和其他栏目保持原有行为。首屏演示由用户提供的 `PixPin_2026-10-10_11-37-46.gif` 转制为两倍速的 `assets/scene-graph-rerun-2x.mp4` 与 `scene-graph-rerun-2x.gif`，保留完整 2940 × 1596 画面，时长约 10.3 秒。视频支持原生播放控制和全屏，`scene-graph-demo.js` 在进入视口时尝试静音播放；减少动态效果偏好下由用户手动播放。倍速已写入媒体，浏览器播放速率保持 1，避免重复加速。
+
+录屏场景为 `1_MP3D_0417`，四个视图分别说明三维对象、RGB、深度及功能关系；功能关系来自离线 JSON，录屏保留原始预测并标明可能存在类别或关系误判。`assets/scene-graph-hero.png` 为折叠展示的系统概念图；`scene-graph-rgb.jpg`、`scene-graph-bbox.jpg`、`scene-graph-result.png` 来自项目仓库 `example/test0721` 第 000240 帧的历史输出，页面标明可能存在误检与关系类别混淆。场景图内容明确区分在线几何跟踪与离线关系生成，并说明模型检测与标注检测共用后续关系生成接口。
 
 在项目目录启动任意静态文件服务器，例如：
 

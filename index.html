@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="谢思宇的个人主页：具身智能、机器人学习，以及面向群聊环境的多模态 Agent 记忆系统研究与实践。"
+      content="谢思宇的个人主页：机器人表征与动作学习、跨本体 Agent Runtime、三维语义场景图与多模态长期记忆。"
     />
     <meta name="theme-color" content="#f2f2ec" />
     <meta property="og:title" content="谢思宇 Siyu Xie — Embodied AI Researcher" />
     <meta
       property="og:description"
-      content="Robot learning, embodied agents, and long-horizon multimodal memory systems for group-chat scenarios."
+      content="Robot representation learning, cross-embodiment agent runtimes, 3D scene graphs, and multimodal long-term memory."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://awesomenabi.github.io/" />
@@ -22,7 +22,7 @@
     <link rel="canonical" href="https://awesomenabi.github.io/" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/pixel-player.webp" as="image" type="image/webp" />
-    <link rel="stylesheet" href="styles.css?v=20260905-start-dock2" />
+    <link rel="stylesheet" href="styles.css?v=20261018-content" />
     <link rel="stylesheet" href="scene-graph.css?v=20261011" />
     <script src="script.js?v=20260905-start-dock2" defer></script>
   </head>
@@ -187,12 +187,12 @@
 
           <dl class="profile-facts">
             <div>
-              <dt>Birthday</dt>
-              <dd>2002.12.28</dd>
+              <dt>Graduation</dt>
+              <dd>2027 届 · 预计 2027.03</dd>
             </div>
             <div>
               <dt>Focus</dt>
-              <dd>Robot Learning · Agent Systems</dd>
+              <dd>Embodied AI · Agent / Memory</dd>
             </div>
             <div>
               <dt>Email</dt>
@@ -219,8 +219,9 @@
             </header>
 
             <p class="about-lead">
-              研究方向聚焦机器人学习、具身智能与多模态记忆，
-              关注如何把算法中的语义结构转化为<em>可执行、可迁移、可在真机验证</em>的系统能力。
+              我是谢思宇，同济大学电子信息专业硕士研究生，预计 2027 年 3 月毕业。
+              研究机器人表征与动作学习，也构建跨本体 Agent Runtime、三维语义场景图与多模态长期记忆，
+              关注如何让智能体<em>理解环境、组织上下文，并把任务执行到真实世界</em>。
             </p>
 
             <div class="about-bottom">
@@ -241,9 +242,9 @@
               <div class="skills-block">
                 <h3>技术能力</h3>
                 <ul class="tag-list" aria-label="技术栈">
-                  <li>Python</li><li>PyTorch</li><li>ROS2</li><li>Zenoh</li>
-                  <li>VLM / VLA</li><li>Function Calling</li><li>MCP</li>
-                  <li>Jetson</li><li>Franka</li><li>Unitree</li>
+                  <li>Python / PyTorch</li><li>LeRobot / π₀.₅</li><li>VLM / VLA</li>
+                  <li>ROS2 / Zenoh / DDS</li><li>MCP / Function Calling</li>
+                  <li>Vector / BM25</li><li>Jetson / Docker</li><li>RGB-D / Scene Graph</li>
                 </ul>
               </div>
             </div>
@@ -284,7 +285,7 @@
                 <div class="paper-body">
                   <div class="paper-meta">
                     <span class="venue-badge">CVPR 2026</span>
-                    <span>主要贡献者</span>
+                    <span>合作作者</span>
                   </div>
                   <h3>Language-Grounded Decoupled Action Representation for Robotic Manipulation</h3>
                   <p class="paper-question"><b>研究问题</b> 连续机器人动作很难承载稳定、可解释的语义，也难以在任务间复用。</p>
@@ -321,7 +322,7 @@
                     <span class="venue-badge venue-badge-outline">AAAI 2027 · Under Review</span>
                     <span>第一作者</span>
                   </div>
-                  <h3>VLM-Guided State-Aware Visual Representation Pretraining for Robot Manipulation</h3>
+                  <h3>VLM-Guided State-Aware Visual Representation Enhancement for Robotic Manipulation</h3>
                   <p class="paper-question"><b>研究问题</b> 通用视觉表征能“看见”场景，却常常忽略机器人执行任务时真正关键的物理状态变化。</p>
                   <p>
                     该工作从冻结 VLM 中蒸馏任务条件下的时序语义，同时加入末端执行器、关节与夹爪状态约束，
@@ -342,10 +343,16 @@
             <header class="section-header">
               <div>
                 <p class="section-index"><span>03</span> INTERN</p>
-                <h2 id="intern-title">实习交流</h2>
+                <h2 id="intern-title">实习经历</h2>
               </div>
-              <p class="section-side-note">蚂蚁集团 · 多模态 Memory 算法实习</p>
+              <p class="section-side-note">多模态记忆 · 具身执行 · 空间感知</p>
             </header>
+
+            <ol class="experience-timeline" aria-label="实习经历时间线">
+              <li><time>2026.07 — 至今</time><div><h3>蚂蚁集团</h3><p>多模态 Memory 算法实习生</p></div><a href="#intern-spotlight-title">长期记忆引擎 <span aria-hidden="true">↘</span></a></li>
+              <li><time>2026.02 — 2026.07</time><div><h3>成都考拉悠然科技有限公司</h3><p>具身智能 Agent Runtime 研发</p></div><a href="#geek-mind">Geek Mind <span aria-hidden="true">↘</span></a></li>
+              <li><time>2025.08 — 2025.12</time><div><h3>码极客人工智能科技有限公司</h3><p>三维空间感知与场景图构建</p></div><a href="#scene-feature-title">三维场景图 <span aria-hidden="true">↘</span></a></li>
+            </ol>
 
             <article class="intern-spotlight" aria-labelledby="intern-spotlight-title">
               <div class="intern-spotlight-copy">
@@ -354,9 +361,10 @@
                   <span class="intern-signal"><i aria-hidden="true"></i> GROUP-CHAT MEMORY</span>
                 </div>
                 <p class="intern-affiliation"><span>INTERNSHIP</span> 蚂蚁集团 · 多模态 Memory 算法实习生</p>
-                <h3 id="intern-spotlight-title">长周期、多会话、多模态用户理解记忆系统</h3>
+                <h3 id="intern-spotlight-title">健康助手长期记忆引擎</h3>
                 <p class="intern-lead">
-                  面向家庭健康助手、医疗群聊等场景，把持续产生的多主体群聊沉淀为结构化长期事实，
+                  面向家庭健康助手与医疗群聊，参与多模态记忆构建及 Add–Search 全链路联调，
+                  将跨会话、多主体消息沉淀为带主体、时间与来源信息的结构化事实，
                   通过统一的 <code>add / search</code> 全链路，为上层 Agent 提供可写入、可检索的个性化上下文。
                 </p>
                 <p>
@@ -461,45 +469,31 @@
               <div class="intern-block-heading">
                 <div>
                   <p>02 / WORK ITEMS</p>
-                  <h3 id="intern-work-title">实习流程事项</h3>
+                  <h3 id="intern-work-title">个人工作与技术要点</h3>
                 </div>
-                <p>个人负责 Add 侧的入参身份统一与条件异步存储两条主线。</p>
+                <p>重点参与图文记忆构建、多主体归因，以及 Add–Search 联调与评测。</p>
               </div>
 
               <div class="intern-work-grid">
-                <article>
-                  <span class="work-index">A</span>
-                  <p class="work-kicker">IDENTITY UNIFICATION</p>
-                  <h4>入参规范与会话隔离</h4>
-                  <p>规范 messages 与 user / agent / run / actor / group 等身份入参，明确会话隔离边界与各阶段输入输出，让不同群聊场景复用同一套 add / search 运行时。</p>
-                  <small>Message schema · Identity fields · Session scope</small>
-                </article>
-                <article>
-                  <span class="work-index">B</span>
-                  <p class="work-kicker">IDENTITY UNIFICATION</p>
-                  <h4>主体注册与称谓归一</h4>
-                  <p>通过主体注册与称谓归一区分说话人与事实主体，解决群聊转述场景下的身份错配，保证事实归属到正确的人。</p>
-                  <small>Subject registry · Alias normalize · Speaker vs subject</small>
-                </article>
-                <article>
-                  <span class="work-index">C</span>
-                  <p class="work-kicker">ASYNC WRITE PATH</p>
-                  <h4>在线校验与短时缓冲</h4>
-                  <p>在线阶段只做入参校验与上下文封装，将带身份及时间元数据的群聊原文写入短时记忆，按协议触发后台任务，使复杂群聊下的写入延迟由秒级降至毫秒级。</p>
-                  <small>Validate · Context package · STM trigger</small>
-                </article>
-                <article>
-                  <span class="work-index">D</span>
-                  <p class="work-kicker">ASYNC WRITE PATH</p>
-                  <h4>后台记忆构建与落库</h4>
-                  <p>后台恢复消息单元后构造记忆单元，以统一结构承载文本事实与图片描述，依次完成轮次合并、话题聚类、事实抽取、相似召回与记忆决策，去重后写入长期记忆。</p>
-                  <small>Hydrate · Turn / Topic · Decision &amp; dedup</small>
-                </article>
+                <article><span class="work-index">A</span><p class="work-kicker">MULTIMODAL REPRESENTATION</p><h4>图像与对话联合编码</h4><p>使用 GME 联合编码图片像素、Caption 与当轮对话，生成兼具视觉内容和会话语义的融合向量，让同一张图片能够被放回具体语境中理解。</p><small>Image pixels · Caption · Conversation · GME</small></article>
+                <article><span class="work-index">B</span><p class="work-kicker">CONTEXT &amp; PROVENANCE</p><h4>属性补充与来源关联</h4><p>结合图片前后各 3 轮对话提取 ATTRS 属性，补充对象身份、类别与专有名称；以 Image ID 关联图片、描述、属性和来源对话，连接视觉记录与结构化事件。</p><small>Context window · ATTRS · Image ID</small></article>
+                <article><span class="work-index">C</span><p class="work-kicker">MULTI-SUBJECT ATTRIBUTION</p><h4>区分“谁说的”与“谁的事实”</h4><p>结合会话隔离、主体注册、别名与称谓归一，分开建模消息来源和事实归属；在写入、查询两侧施加身份约束，减少跨会话串记忆与多人事实混淆。</p><small>Session scope · Subject registry · Identity constraints</small></article>
+                <article><span class="work-index">D</span><p class="work-kicker">ADD–SEARCH INTEGRATION</p><h4>联调、检索与可追溯问答</h4><p>参与写入、记忆构建、检索和问答链路的联调与评测，结合向量 / BM25 混合检索及主体、时间约束返回相关记忆；接入手表、手环、体脂秤等 IoT 数据，支持长期习惯画像。</p><small>Hybrid retrieval · Time constraints · Evaluation</small></article>
               </div>
             </section>
 
+            <section class="intern-block" aria-labelledby="memory-results-title">
+              <div class="intern-block-heading"><div><p>03 / EVALUATION &amp; APPLICATION</p><h3 id="memory-results-title">评测与场景落地</h3></div><p>以记忆检索支持个性化问答和历史信息追溯。</p></div>
+              <div class="evidence-metrics">
+                <div><span>LoCoMo · 文本</span><strong>87.73<small>%</small></strong><p>LLM-as-a-Judge 评测得分</p></div>
+                <div><span>Mem-Gallery · 多模态</span><strong>92.20<small>%</small></strong><p>LLM-as-a-Judge 评测得分</p></div>
+                <div><span>应用场景</span><strong class="metric-label">群聊 + IoT</strong><p>家庭健康群与医疗群聊联调</p></div>
+              </div>
+              <p class="evidence-note">以上为项目评测得分；不同数据集的任务与评分口径不同，不作横向排名比较。</p>
+            </section>
+
             <div class="intern-sourcebar">
-              <p>页面仅展示可公开的链路级信息，不涉及具体实现、配置、策略与业务数据。</p>
+              <p>面向长周期用户理解，将多模态记录转化为带身份、时间与来源的可检索记忆。</p>
             </div>
           </section>
 
@@ -516,11 +510,11 @@
             <article class="case-study scene-feature" aria-labelledby="scene-feature-title">
               <div class="case-heading">
                 <div>
-                  <p class="case-number">PROJECT / 01 · OBJECT-CENTRIC PERCEPTION</p>
+                  <p class="case-number">PROJECT / 01 · 2025.08—2025.12</p>
                   <h3 id="scene-feature-title">物体级三维场景图</h3>
-                  <p class="case-subtitle">从移动观察到对象、属性与关系，让机器人看见结构化的世界。</p>
+                  <p class="case-subtitle">码极客人工智能科技有限公司 · 跨帧对象绑定与富语义对象构建</p>
                 </div>
-                <span class="case-status case-status-blue"><i aria-hidden="true"></i> RGB-D → SCENE GRAPH</span>
+                <span class="case-status case-status-blue"><i aria-hidden="true"></i> OBJECTS · ATTRIBUTES · RELATIONS</span>
               </div>
               <figure class="scene-feature__visual">
                 <a href="projects/scene-graph.html" aria-label="查看物体级三维场景图项目详情">
@@ -529,28 +523,28 @@
                 <figcaption>系统概念图 · 四足带臂平台 / 臂载相机 · AI 绘制，非运行截图</figcaption>
               </figure>
               <div class="scene-feature__body">
-                <p class="scene-feature__lead">将 RGB-D 与相机位姿中的逐帧观测，组织成世界坐标下的物体表示，再生成结构化语义属性、功能关系与位置关系。</p>
+                <p class="scene-feature__lead">基于有位姿 RGB-D 序列构建物体级场景表示。个人负责跨帧实例关联、历史观测管理及富语义对象构建，将检测记录、实例 ID 与语义属性关联起来，为下游操作与导航提供环境知识先验。</p>
                 <div class="scene-feature__points">
                   <div><span>01 / PERCEIVE</span><h4>移动感知</h4><p>CuTR 三维框检测与 OpenCLIP 类别匹配，统一真机和仿真轨迹输入。</p></div>
-                  <div><span>02 / ASSOCIATE</span><h4>跨视角对象关联</h4><p>三维重叠关联、小物体重投影匹配与 BoxFusion 多视角框优化。</p></div>
-                  <div><span>03 / UNDERSTAND</span><h4>语义与关系建模</h4><p>Qwen 视觉语言模型离线补充对象属性及功能、位置两类关系。</p></div>
+                  <div><span>02 / ASSOCIATE</span><h4>跨视角对象关联</h4><p>基于 BoxFusion 世界坐标框，以 3D IoU 和小物体二维重投影匹配维护跨帧实例对应与历史观测。</p></div>
+                  <div><span>03 / UNDERSTAND</span><h4>语义与关系建模</h4><p>结合 CLIP 分类与 Qwen 描述颜色、材质、部件、状态和功能；按实例 ID 复用属性，输出功能与位置关系三元组。</p></div>
                 </div>
                 <p class="scene-feature__boundary"><span>在线</span> 几何跟踪与可视化 <b aria-hidden="true">/</b> <span>离线</span> 检测导出与关系图生成</p>
               </div>
               <div class="case-footer">
                 <p>多视角几何 × 物体语义 × 可交互关系</p>
                 <div class="case-footer-actions">
-                  <a class="button button-secondary" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">GitHub 仓库 <span aria-hidden="true">↗</span></a>
+                  <a class="button button-secondary" href="https://github.com/awesomeNabi/scence-graph" target="_blank" rel="noreferrer">源码（需权限） <span aria-hidden="true">↗</span></a>
                   <a class="button button-primary" href="projects/scene-graph.html">查看项目详情 <span aria-hidden="true">→</span></a>
                 </div>
               </div>
             </article>
-            <article class="case-study case-study-geek">
+            <article class="case-study case-study-geek" id="geek-mind">
               <div class="case-heading">
                 <div>
-                  <p class="case-number">PROJECT / 02 · 2026.03—2026.07</p>
+                  <p class="case-number">PROJECT / 02 · 2026.02—2026.07</p>
                   <h3>Geek Mind — 跨本体具身 Agent Runtime</h3>
-                  <p class="case-subtitle">上海码极客人工智能科技有限公司 · 核心框架研发</p>
+                  <p class="case-subtitle">成都考拉悠然科技有限公司 · 感知、规划与执行框架研发</p>
                 </div>
                 <span class="case-status"><i></i> REAL-ROBOT DEPLOYED</span>
               </div>
@@ -574,26 +568,31 @@
                 <div class="case-summary">
                   <p class="micro-label">项目介绍</p>
                   <p class="case-lead">
-                    面向机械臂与四足机器人，构建“多模态感知—LLM 决策—动作执行”的模块化 Agent 平台，
-                    把感知、记忆、规划与机器人控制统一封装为可调用服务。
+                    面向机械臂、四足机器人与轮式平台，构建配置驱动、插件化的跨本体 Agent Runtime，
+                    将多模态感知、任务规划、工具调用与执行反馈组织为共享的任务闭环。
                   </p>
                   <p>
-                    目标是在硬件协议碎片化、云边端协同与长程任务规划之间建立稳定接口，
-                    让同一套上层智能体逻辑能够连接不同机器人本体，并完成自主任务闭环。
+                    个人负责多模态感知、任务规划、工具调用和执行框架。通过统一语义上下文与本体能力适配，
+                    解耦高层任务决策和底层硬件执行，支持导览、巡检及导航—抓取—递送等多步任务。
                   </p>
                   <ul class="tag-list case-tags" aria-label="项目技术栈">
                     <li>ROS2</li><li>Zenoh</li><li>MCP / HTTP</li><li>Function Calling</li>
                     <li>Planner LLM</li><li>Jetson</li>
                   </ul>
+                  <div class="project-resource-links" aria-label="Geek Mind 项目资源">
+                    <a href="https://awesomenabi.github.io/Geek-Mind/#real-world-demo" target="_blank" rel="noreferrer">真机完整演示 ↗</a>
+                    <a href="https://awesomenabi.github.io/Geek-Mind/#architecture" target="_blank" rel="noreferrer">运行架构 ↗</a>
+                    <a href="#geek-benchmark-title">长程任务评测 ↓</a>
+                  </div>
                 </div>
               </div>
 
               <div class="public-context">
-                <div class="public-context-label">项目简介</div>
+                <div class="public-context-label">共享任务闭环</div>
                 <p>
-                  Geek Mind 定义为面向机器人的“通用具身大脑”，以<b>四大并行系统与中央事件总线</b>
-                  组织感知、交互、思考与动作，并通过硬件抽象层将不同机器人本体映射为标准语义指令，
-                  使同一套上层智能体能力可以跨本体组合与执行。
+                  以 <b>Observe → Fuse → Plan → Execute → Verify</b> 组织任务闭环：
+                  语音、文本、视觉与机器人状态进入共享上下文，Cortex 选择工具，由本体连接器执行，
+                  再将执行结果回注下一轮决策。真实机器人与仿真环境复用同一高层任务循环。
                 </p>
               </div>
 
@@ -605,23 +604,23 @@
                 <div class="responsibility-grid">
                   <article>
                     <span class="responsibility-index">A</span>
-                    <h5>HAL 与统一接入</h5>
-                    <p>在硬件抽象层之上规范多模态输入、机器人状态与能力描述，让规划层不依赖具体传感器和本体 API。</p>
+                    <h5>插件化输入与本体适配</h5>
+                    <p>以 Input / LLM / Action 插件及本体连接器组织感知、模型调用和动作派发，统一语音、视觉描述与机器人状态的语义上下文。</p>
                   </article>
                   <article>
                     <span class="responsibility-index">B</span>
-                    <h5>能力 Schema 与工具协议</h5>
-                    <p>通过 MCP / HTTP 与 Tool / Function Calling 暴露导航、抓取等原子能力，支持规划器选择与组合执行。</p>
+                    <h5>配置驱动与工具协议</h5>
+                    <p>以 JSON5 与 Schema 校验管理模式和插件，把导航、抓取等技能封装为 MCP / HTTP 工具，使任务逻辑与本体能力可独立配置。</p>
                   </article>
                   <article>
                     <span class="responsibility-index">C</span>
                     <h5>长程任务分解与编排</h5>
-                    <p>基于 Planner LLM 与 Action Orchestrator 完成长程指令拆解、依赖排序、状态反馈和多级安全门控。</p>
+                    <p>通过 Planner 与 Action Orchestrator 组织顺序、并发和依赖执行；结合可用动作与本体状态选择工具，将执行反馈回注后续决策。</p>
                   </article>
                   <article>
                     <span class="responsibility-index">D</span>
-                    <h5>Cross-Embodiment Runtime</h5>
-                    <p>将 Agent 逻辑与机器人控制 API 解耦，形成可在机械臂与四足机器人之间复用的跨本体具身大脑运行时。</p>
+                    <h5>真机执行边界</h5>
+                    <p>结合输入时效检查、硬件预检与动作门控约束执行，通过 ROS2 / Zenoh / DDS 接入硬件，并以 Docker Compose 支持 Jetson 端侧部署。</p>
                   </article>
                 </div>
               </section>
@@ -637,7 +636,7 @@
                   <li><span>03</span><b>Agent Runtime</b><small>上下文组织、任务路由与工具调用</small></li>
                   <li><span>04</span><b>Planner LLM</b><small>把长程指令拆解为可执行队列</small></li>
                   <li><span>05</span><b>Action Orchestrator</b><small>能力编排、状态反馈与安全门控</small></li>
-                  <li><span>06</span><b>Robot Bodies</b><small>机械臂 · Unitree Go2 / Go2-W</small></li>
+                  <li><span>06</span><b>Robot Bodies</b><small>ARX X5 · Go2 / Go2-W · RANGER MINI</small></li>
                 </ol>
               </section>
 
@@ -648,10 +647,19 @@
                 </div>
                 <div class="outcome-grid">
                   <div><strong>Jetson</strong><span>NVIDIA Orin Nano Super 边缘部署</span></div>
-                  <div><strong>Multi-body</strong><span>机械臂与 Unitree Go2 / Go2-W</span></div>
-                  <div><strong>Closed loop</strong><span>自主感知、规划、执行与反馈闭环</span></div>
+                  <div><strong>Multi-body</strong><span>Go2 / Go2-W、RANGER MINI 与 ARX X5 场景联调</span></div>
+                  <div><strong>Closed loop</strong><span>导览、巡检与导航—抓取—递送演示</span></div>
                   <div><strong>APEC</strong><span>成都 APEC Digital Week 特别展示</span></div>
                 </div>
+              </section>
+
+              <section class="case-section" aria-labelledby="geek-benchmark-title">
+                <div class="case-section-title"><span>04</span><div><p>SIMULATION BENCHMARKS</p><h4 id="geek-benchmark-title">从真机闭环到长程任务评测</h4></div></div>
+                <div class="benchmark-summary">
+                  <article><p class="micro-label">OPTIMUS BENCH / MINECRAFT</p><h5>24.36<span>%</span></h5><p>适配 STEVE-1 与采集、合成等技能，以独立库存状态判定完成情况。</p><small>Iron、Gold、Diamond、Redstone、Armor 五组成功率的未加权平均；不等同于全部任务的汇总成功率。</small></article>
+                  <article><p class="micro-label">STARDOJO / STARDEW VALLEY</p><h5>4.8<span>% → </span>23.8<span>%</span></h5><p>双动作批处理与战斗能力提示改进后，Lite-100 中 farming 类任务成功率提升。</p><small>使用文本观测与 9 个原子技能，由官方任务评估器判定完成；此处为 farming 类结果。</small></article>
+                </div>
+                <p class="evidence-note">项目评测口径与演示记录详见 <a href="https://awesomenabi.github.io/Geek-Mind/#benchmarks" target="_blank" rel="noreferrer">Geek Mind 评测页 ↗</a>。</p>
               </section>
 
               <div class="case-footer">
@@ -665,10 +673,10 @@
                   >查看 GitHub 项目 <span>↗</span></a>
                   <a
                     class="button button-primary"
-                    href="https://mp.weixin.qq.com/s/_3Vhwg3F90XdgVEWZ5oUNA"
+                    href="https://awesomenabi.github.io/Geek-Mind/"
                     target="_blank"
                     rel="noreferrer"
-                  >阅读 Geek Mind 项目文章 <span>↗</span></a>
+                  >项目主页与完整演示 <span>↗</span></a>
                 </div>
               </div>
             </article>
@@ -691,7 +699,7 @@
 
     <footer class="site-footer page-shell">
       <p><span class="status-dot status-dot-small" aria-hidden="true"></span> 谢思宇 · Siyu Xie</p>
-      <p>Embodied AI · Robot Learning · Agent Systems</p>
+      <p>Embodied AI · Agent / Memory · 更新于 2026.10</p>
       <a href="#top">返回顶部 ↑</a>
     </footer>
     </div>

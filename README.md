@@ -1,40 +1,35 @@
-# 谢思宇 · Siyu Xie — Personal Homepage
+# Siyu Xie · Mind, Memory & Motion
 
-一个零依赖的静态个人主页，围绕 `About / Research / Intern / Projects` 四个主栏目展开。
+谢思宇的静态个人主页。古希腊石雕、柱式和暖纸张色调，与毛玻璃导航、悬浮卡片及轻量交互结合。无需安装依赖或构建，GitHub Pages 从仓库根目录发布。
 
-入口采用灰白色背景、正视的 CRT 显示器与 PS1 风格主机。屏幕内部参考早期 PlayStation 人物选择界面：蓝绿色底、黄色边框、左侧栏目菜单、右侧像素人物卡片，素材使用预加载的 `assets/pixel-player.webp`。鼠标或键盘方向键选择 About、Research、Intern、Projects；点击人物卡片查看当前栏目；Reset 回到初始栏目；START 进入个人主页。右侧操作说明已替换为通过连线连接 CRT 的实体 START 按钮；窄屏时按钮移至主机下方，点击平滑进入正式主页。聚焦游戏机后也可用 A / Z 查看、B / X 返回，聚焦机身时 Enter 进入主页。移除页眉和机身上虚构的姓名品牌字样。鼠标移入正常画面时显示斜向扫过的亮带，经过的局部画面轻微错位抖动，移出停止；没有满屏斜条纹、环形波纹或指针跟随。电源键可在正常画面与待机雪花屏之间切换，带短暂收屏过渡和琥珀色待机指示灯；唤醒后保留选中的栏目。待机时屏幕菜单不可操作；雪花纹理仅在待机、页面可见且封面在视野内时更新。减少动态效果偏好下关闭扫描纹和收屏动画，雪花屏保持静态。没有放大镜或局部缩放，保留滚动过渡，支持窄屏与无 JavaScript 浏览。
+## 页面与交互
 
-视觉上采用“秋招雷达”的冷白浅蓝背景、状态信号与编号信息卡；结构上参考 setsaile 的左侧个人档案栏和右侧学术内容区。Intern 以三段经历时间线串联多模态记忆、具身执行与空间感知，展开蚂蚁集团实习的“项目概览 / 个人工作与技术要点 / 评测与场景落地”；Projects 展示三维场景图与 Geek Mind 跨本体 Agent Runtime，提供项目主页、真机演示与评测入口。不发布业务数据或内部仓库链接。
+- `index.html`：个人介绍、四个项目档案、两篇论文、三段实习、教育背景与联系入口。
+- `athena.css`：主站响应式样式；390 px 手机、平板和桌面布局；系统减少动态效果与打印支持。
+- `athena.js`：手机导航、项目筛选、锚点联动、视频弹窗、邮箱复制、阅读进度和动态开关。无 JavaScript 时正文、项目档案和链接仍可使用。
+- `projects/scene-graph.html`：保留原有 Rerun 录屏、近景放大和历史输出，以 `project-theme.css` 统一视觉。
+- `styles.css`、`scene-graph.css`、`scene-graph-demo.js`：保留的项目页布局和媒体逻辑。旧 `script.js` 已不被首页加载。
 
-## 本地预览
+预览：在此目录运行 `python -m http.server 4175 --bind 127.0.0.1`，打开 http://127.0.0.1:4175/ 。
 
-三维场景图项目在首页 Projects 中提供特色卡片，并通过 `projects/scene-graph.html` 展示 Rerun 实际运行录屏、系统链路、跨视角关联、多视角融合与语义关系输出。页面与 `scene-graph.css` 共用网站的冷白浅蓝视觉；CRT 封面和其他栏目保持原有行为。首屏演示由用户提供的 `PixPin_2026-10-10_11-37-46.gif` 转制为两倍速的 `assets/scene-graph-rerun-2x.mp4` 与 `scene-graph-rerun-2x.gif`，保留完整 2940 × 1596 画面，时长约 10.3 秒。视频支持原生播放控制和全屏，`scene-graph-demo.js` 在进入视口时尝试静音播放；减少动态效果偏好下由用户手动播放。倍速已写入媒体，浏览器播放速率保持 1，避免重复加速。
+## 内容依据与边界
 
-录屏场景为 `1_MP3D_0417`，四个视图分别说明三维对象、RGB、深度及功能关系；功能关系来自离线 JSON，录屏保留原始预测并标明可能存在类别或关系误判。主演示右侧的小卡片展示用户提供的 `PixPin_2026-10-15_17-05-20.gif`，转制为原速、完整 1548 × 942 画面的 `assets/scene-graph-box-detail.mp4`，避免网页加载约 74 MB 的原始 GIF。卡片单独使用约 1 MB 的 `scene-graph-box-preview.mp4`；原尺寸播放器设置 `preload="none"`，点击时再加载。点击卡片打开原生模态放大展示，支持视频控制、全屏、关闭按钮、Esc 和点击遮罩关闭；关闭后焦点返回卡片。窄屏时小卡片移到主视图下方，保留紧凑布局。
+内容核对日期：2026-11-10。
 
-`assets/scene-graph-hero.png` 为折叠展示的系统概念图；`scene-graph-rgb.jpg`、`scene-graph-bbox.jpg`、`scene-graph-result.png` 来自项目仓库 `example/test0721` 第 000240 帧的历史输出，页面标明可能存在误检与关系类别混淆。场景图内容明确区分在线几何跟踪与离线关系生成，并说明模型检测与标注检测共用后续关系生成接口。
+- 用户提供的《谢思宇_Agent.pdf》：教育、经历、个人职责、论文状态和记忆评测成绩。不上传原始简历、手机号或业务数据。
+- [Geek Mind](https://github.com/awesomeNabi/Geek-Mind)：多本体任务闭环、Microduck 仿真、Optimus 和 StarDojo 的独立指标口径。
+- [TreeMem / mem_cg](https://github.com/awesomeNabi/mem_cg)：Session Tree、两层检索、原始轮次回溯、GME 与 ATTRS 方法概述。仓库需访问权限。
+- memx：参考项目说明与简历，只展示个人工作和概念流程，不发布内部代码、文档、客户数据或运行配置。
+- [Scene Graph](https://github.com/awesomeNabi/scence-graph)：保留在线几何与离线关系构建的界限、上游归属、历史输出误差及实例编号可能切换等说明。仓库需访问权限。
 
-在项目目录启动任意静态文件服务器，例如：
+87.73% / 92.20% 是简历报告的 LLM-as-a-Judge 得分，不与 24.36% 的 Minecraft 五组平均成功率混用。TreeMem 不单独挂载上述记忆成绩，避免未经证实的归因。AAAI 2027 工作按简历标为在审。
 
-```powershell
-python -m http.server 4173
-```
+## 美术资产
 
-然后打开 `http://127.0.0.1:4173`。
+`assets/athena-marble.webp` 为本次使用内置 Imagegen 生成的装饰性视觉，已转为约 188 KiB 的 WebP。项目截图、论文方法图和视频仍使用原有素材；CSS 示意图在页面标明用途。
 
-## 部署
+生成提示词（内置工具，非 CLI）：
 
-站点无需构建步骤。GitHub Pages 从仓库根目录发布；腾讯云 EdgeOne 可上传 `dist/` 文件夹或 `siyu-xie-homepage.zip`，并确保 `index.html` 位于上传根目录。
+> Use case: stylized-concept. Asset type: atmospheric editorial photograph for a personal AI researcher portfolio website, ancient Greek classical art combined with contemporary minimalism. Create a beautifully art-directed composition, a weathered ivory marble bust of Athena with a delicate simple classical helmet, viewed in three-quarter profile looking to the left, on a fluted Ionic column plinth. In the background: a single monumental Greek column and a warm sunlit limestone gallery wall with soft architectural shadows. A thin antique brass armillary sphere ring curves behind the bust as a subtle symbol of reasoning and memory, no complex sci-fi elements. Sculptural museum photography, exquisite natural stone pores and age patina, muted warm ivory, parchment, sand and aged bronze palette. Dramatic but soft afternoon side light, restrained contrast and rich shadows. Vertical 4:5 composition, bust fills the central 65%, generous breathing room, beautiful sculptural silhouette, slightly grainy vintage editorial aesthetic. No letters, words, numbers, watermark, interface, frames or logos. Not a website screenshot.
 
-请勿上传整个工作目录：简历 PDF、原始视频、GIF 和参考链接文件仅作为本地素材，其中简历包含不适合直接公开的个人信息。
-
-如需长期稳定的中国大陆访问地址，请在腾讯云 EdgeOne Pages 选择包含中国大陆的加速区域，并绑定已完成 ICP 备案的自定义域名。
-
-
-## 2026 年 10 月内容更新
-
-- 对齐两份最新简历的教育信息、论文标题与作者角色，并按三段实习的单位和时间建立经历导航。
-- 蚂蚁实习补充 GME 图文联合编码、语境属性、来源关联、多主体归因及 Add–Search 联调；LoCoMo / Mem-Gallery 标明 LLM-as-a-Judge 评分口径。
-- Geek Mind 更新为配置驱动的跨本体 Runtime，补充执行编排、真机执行约束、项目主页，以及 Minecraft / StarDojo 分类评测口径。
-- 三维场景图突出个人负责的对象绑定和富语义对象构建，保留在线几何 / 离线关系生成边界及私有源码访问提示。
-- 保留 CRT 封面、导航、视频、响应式与减少动态效果行为。不发布原始简历或面试 PPT。
+`assets/folio-mark.svg` 为手工绘制的柱式图标。网页不依赖外部字体、CDN、分析追踪器或付费模型调用。

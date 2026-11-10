@@ -63,8 +63,10 @@
   const projects = [...document.querySelectorAll('.project-card')];
   const filterButtons = [...filters.querySelectorAll('button')];
   const count = document.querySelector('.collection-count');
+  const projectGrid = document.querySelector('.project-grid');
   filters.hidden = false;
   const setFilter = value => {
+    projectGrid.dataset.filter = value;
     let total = 0;
     projects.forEach(project => { project.hidden = value !== 'all' && project.dataset.category !== value; if (!project.hidden) total++; });
     filterButtons.forEach(button => { const active = button.dataset.filter === value; button.classList.toggle('is-active', active); button.setAttribute('aria-pressed', String(active)); });
